@@ -1,7 +1,6 @@
 import type { Visitor } from '../visitor';
 import { AstNode } from './ast';
-
-export type Operator = string;
+import type { Operator } from '../lang/operators';
 
 export abstract class OperationNode extends AstNode {
 
