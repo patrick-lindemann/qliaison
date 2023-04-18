@@ -1,6 +1,6 @@
+import type { Type } from '../lang/types';
 import type { Visitor } from '../visitor';
 import { AstNode } from './ast';
-import type { Type } from '../lang/types';
 
 export class ValueNode extends AstNode {
 

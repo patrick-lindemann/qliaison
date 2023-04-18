@@ -1,6 +1,6 @@
+import type { Operator } from '../lang/operators';
 import type { Visitor } from '../visitor';
 import { AstNode } from './ast';
-import type { Operator } from '../lang/operators';
 
 export abstract class OperationNode extends AstNode {
 

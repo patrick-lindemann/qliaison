@@ -4,6 +4,6 @@ export const types = [
     'integer',
     'float',
     'string'
-]
+];
 
 export type Type = typeof types[number];
