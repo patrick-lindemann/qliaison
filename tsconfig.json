@@ -1,0 +1,7 @@
+{
+    "compilerOptions": {
+        "baseUrl": "src",
+        "lib": ["ES2016"],
+        "moduleResolution": "nodenext"
+    }
+}
