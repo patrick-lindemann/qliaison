@@ -1,13 +1,12 @@
-import type { Type } from '../lang/types';
 import type { Visitor } from '../visitor';
 import { AstNode } from './ast';
 
 export class ValueNode extends AstNode {
 
-    type: Type;
+    type: string;
     value: any;
 
-    constructor(type: Type, value: any) {
+    constructor(type: string, value: any) {
         super();
         this.type = type;
         this.value = value;
