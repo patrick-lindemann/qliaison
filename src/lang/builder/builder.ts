@@ -1,9 +1,9 @@
 import { VariableNode } from 'core/ast';
 import {
-    AST, And, Array, Boolean, Comparison, Condition, Equals, Function,
+    And, Array, Boolean, Comparison, Condition, Equals, Function,
     GreaterThan, In, IsEmpty, IsNotEmpty, IsNotNull, IsNull, LessThan,
-    LessThanEquals, Like, Not, NotEquals, NotIn, Null, Number, Or, String, Value,
-    Variable, keywords
+    LessThanEquals, Like, Not, NotEquals, NotIn, Null, Number, Or, ParseTree,
+    String, Value, Variable, keywords
 } from 'lang/defs';
 
 /* Types */
@@ -16,8 +16,8 @@ export class Builder {
 
     /* Methods */
 
-    root(expr: Condition | Comparison): AST {
-        return new AST(expr);
+    root(expr: Condition | Comparison): ParseTree {
+        return new ParseTree(expr);
     }
 
     /* Logical Operators */
