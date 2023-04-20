@@ -2,19 +2,18 @@
   "root": true,
   "parser": "@typescript-eslint/parser",
   "plugins": [
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "prettier"
   ],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/recommended",
+    "prettier"
   ],
   "rules": {
-    "semi": "warn",
-    "quotes": [
-      "warn",
-      "single"
-    ],
+    "prettier/prettier": "warn",
     "@typescript-eslint/semi": [
       "warn"
     ],

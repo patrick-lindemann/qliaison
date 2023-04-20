@@ -1,16 +1,11 @@
 {
-    "[typescript]": {
-        "editor.autoIndent": "full",
-        "editor.detectIndentation": false,
-        "editor.formatOnSave": true,
-        "editor.tabSize": 4
-    },
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": true,
         "source.organizeImports": true
     },
-    "eslint.format.enable": true,
+    "editor.formatOnSave": true,
     "eslint.lintTask.enable": true,
     "typescript.enablePromptUseWorkspaceTsdk": true,
-    "typescript.tsdk": "node_modules\\typescript\\lib"
+    "typescript.tsdk": "node_modules\\typescript\\lib",
+    "prettier.tabWidth": 4
 }
