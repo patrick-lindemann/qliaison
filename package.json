@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "nearley": "^2.20.1",
+    "ts-mixer": "^6.0.3",
     "typescript": "^5.0.4"
   },
   "devDependencies": {
