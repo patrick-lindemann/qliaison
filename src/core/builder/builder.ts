@@ -1,8 +1,9 @@
-import { And, Array, Boolean, Comparison, Condition, Empty, Equals, Function, GreaterThan, In, Is, IsNot, LessThan, LessThanEquals, Like, Not, NotEquals, NotIn, Null, Number, Or, Root, String, Value, Variable, keywords } from 'core/ast';
+import { And, Array, BinaryOperation, Boolean, Comparison, Condition, Empty, Equals, Function, GreaterThan, In, Is, IsNot, LessThan, LessThanEquals, Like, Not, NotEquals, NotIn, Null, Number, Or, Root, String, UnaryOperation, Value, Variable, keywords } from 'core/ast';
 
 /* Types */
 
 export type NativeValue = null | boolean | number | string;
+export type Any = Comparison | Condition | Function | Variable | Array | Value;
 
 /* Classes */
 
@@ -41,27 +42,27 @@ export class Builder {
     /* Comparators */
 
     eq(identifier: string, value: NativeValue): Comparison {
-        return new Equals(this.variable(identifier), this.value(value));
+        return new Equals(this.variable(identifier), this._value(value));
     }
     
     neq(identifier: string, value: NativeValue): Comparison {
-        return new NotEquals(this.variable(identifier), this.value(value));
+        return new NotEquals(this.variable(identifier), this._value(value));
     }
     
     lt(identifier: string, value: NativeValue): Comparison {
-        return new LessThan(this.variable(identifier), this.value(value));
+        return new LessThan(this.variable(identifier), this._value(value));
     }
     
     lte(identifier: string, value: NativeValue): Comparison {
-        return new LessThanEquals(this.variable(identifier), this.value(value));
+        return new LessThanEquals(this.variable(identifier), this._value(value));
     }
     
     gt(identifier: string, value: NativeValue): Comparison {
-        return new GreaterThan(this.variable(identifier), this.value(value));
+        return new GreaterThan(this.variable(identifier), this._value(value));
     }
     
     like(identifier: string, value: NativeValue): Comparison {
-        return new Like(this.variable(identifier), this.value(value));
+        return new Like(this.variable(identifier), this._value(value));
     }
     
     is(identifier: string, value: 'null' | 'empty'): Comparison {
@@ -79,18 +80,18 @@ export class Builder {
     }
 
     in(identifier: string, array: NativeValue[]): Comparison {
-        return new In(this.variable(identifier), this.array(...array));
+        return new In(this.variable(identifier), this._array(...array));
     }
 
     notIn(identifier: string, array: NativeValue[]): Comparison {
-        return new NotIn(this.variable(identifier), this.array(...array));
+        return new NotIn(this.variable(identifier), this._array(...array));
     }
 
     /* Functions & Variables */
 
     function(identifier: string, ...parameters: (NativeValue | Variable)[]): Function {
         const paramNodes = parameters.map(
-            (param) => param instanceof Variable ? param : this.value(param)
+            (param) => param instanceof Variable ? param : this._value(param)
         );
         return new Function(identifier, paramNodes);
     }
@@ -102,14 +103,22 @@ export class Builder {
         return new Variable(identifier);
     }
 
-    /* Values & Arrays */
+    /* Helper Functions */
     
-    array(...items: NativeValue[]): Array<Value> {
-        const mappedItems = items.map((item) => this.value(item));
+    _unaryOperation(operator: string, value: Any): UnaryOperation {
+        return new UnaryOperation(operator, value);
+    }
+
+    _binaryOperation(operator: string, left: Any, right: Any): BinaryOperation {
+        return new BinaryOperation(operator, left, right);
+    }
+
+    _array(...items: NativeValue[]): Array<Value> {
+        const mappedItems = items.map((item) => this._value(item));
         return new Array(mappedItems);
     }
 
-    value(value: NativeValue): Value {
+    _value(value: NativeValue): Value {
         if (value == null) {
             return new Null();
         }
