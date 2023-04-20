@@ -1,7 +1,7 @@
 import { Visitor } from 'core/visitor';
 import { AstNode } from './ast';
 
-/* Abstract classes */
+/* Abstract Classes */
 
 export abstract class Operation extends AstNode {
     constructor(public operator: string) {
@@ -10,7 +10,9 @@ export abstract class Operation extends AstNode {
     }
 }
 
-export abstract class UnaryOperation extends Operation {
+/* Classes */
+
+export class UnaryOperation extends Operation {
     constructor(public operator: string, public value: AstNode) {
         super(operator);
     }
@@ -19,7 +21,7 @@ export abstract class UnaryOperation extends Operation {
     }
 }
 
-export abstract class BinaryOperation extends Operation {
+export class BinaryOperation extends Operation {
     constructor(public operator: string, public left: AstNode, public right: AstNode) {
         super(operator);
         this.left = left;
