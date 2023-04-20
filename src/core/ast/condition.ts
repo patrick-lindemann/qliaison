@@ -9,6 +9,7 @@ export type ConditionOperator = typeof conditionOperators[number];
 /* Constants */
 
 export const conditionOperators = [
+    'not',
     'and',
     'or'
 ];
