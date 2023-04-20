@@ -10,7 +10,8 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "grammar-build": "nearleyc src/lang/grammar/grammar.ne -o src/lang/grammar/grammar.ts && eslint --fix src/lang/grammar/grammar.ts"
   },
   "dependencies": {
     "nearley": "^2.20.1",
