@@ -8,7 +8,7 @@ import {
 
 /* Types */
 
-export type POJO = null | boolean | number | string;
+export type NativeValue = null | boolean | number | string;
 
 /* Classes */
 
@@ -46,27 +46,27 @@ export class Builder {
 
     /* Comparators */
 
-    eq(identifier: string, value: POJO): Comparison {
+    eq(identifier: string, value: NativeValue): Comparison {
         return new Equals(this.variable(identifier), this.value(value));
     }
     
-    neq(identifier: string, value: POJO): Comparison {
+    neq(identifier: string, value: NativeValue): Comparison {
         return new NotEquals(this.variable(identifier), this.value(value));
     }
     
-    lt(identifier: string, value: POJO): Comparison {
+    lt(identifier: string, value: NativeValue): Comparison {
         return new LessThan(this.variable(identifier), this.value(value));
     }
     
-    lte(identifier: string, value: POJO): Comparison {
+    lte(identifier: string, value: NativeValue): Comparison {
         return new LessThanEquals(this.variable(identifier), this.value(value));
     }
     
-    gt(identifier: string, value: POJO): Comparison {
+    gt(identifier: string, value: NativeValue): Comparison {
         return new GreaterThan(this.variable(identifier), this.value(value));
     }
     
-    like(identifier: string, value: POJO): Comparison {
+    like(identifier: string, value: NativeValue): Comparison {
         return new Like(this.variable(identifier), this.value(value));
     }
     
@@ -86,17 +86,17 @@ export class Builder {
         return new IsNotEmpty(this.variable(identifier));
     }
     
-    in(identifier: string, array: POJO[]): Comparison {
+    in(identifier: string, array: NativeValue[]): Comparison {
         return new In(this.variable(identifier), this.array(...array));
     }
 
-    notIn(identifier: string, array: POJO[]): Comparison {
+    notIn(identifier: string, array: NativeValue[]): Comparison {
         return new NotIn(this.variable(identifier), this.array(...array));
     }
 
     /* Functions & Variables */
 
-    function(identifier: string, ...parameters: (POJO | Variable)[]): Function {
+    function(identifier: string, ...parameters: (NativeValue | Variable)[]): Function {
         const paramNodes = parameters.map(
             (param) => param instanceof Variable ? param : this.value(param)
         );
@@ -112,12 +112,12 @@ export class Builder {
 
     /* Helper Methods*/
     
-    protected array(...items: POJO[]): Array<Value> {
+    protected array(...items: NativeValue[]): Array<Value> {
         const mappedItems = items.map((item) => this.value(item));
         return new Array(...mappedItems);
     }
 
-    protected value(value: POJO): Value {
+    protected value(value: NativeValue): Value {
         if (value == null) {
             return new Null();
         }
