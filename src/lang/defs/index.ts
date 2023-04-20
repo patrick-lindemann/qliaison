@@ -1,3 +1,4 @@
+export { AST } from './ast';
 export { Function } from './functions';
 export { Keyword, keywords } from './keywords';
 export { And, Comparison, Condition, Equals, GreaterThan, GreaterThanEquals, In, IsEmpty, IsNotEmpty, IsNotNull, IsNull, LessThan, LessThanEquals, Like, Not, NotEquals, NotIn, Operator, Or, operators } from './operations';
