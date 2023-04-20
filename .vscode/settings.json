@@ -6,6 +6,5 @@
     "editor.formatOnSave": true,
     "eslint.lintTask.enable": true,
     "typescript.enablePromptUseWorkspaceTsdk": true,
-    "typescript.tsdk": "node_modules\\typescript\\lib",
-    "prettier.tabWidth": 4
+    "typescript.tsdk": "node_modules\\typescript\\lib"
 }
