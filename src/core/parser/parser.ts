@@ -1,5 +1,5 @@
-import { Root } from '../ast';
+import { Root } from 'core/ast';
 
-export abstract class Parser<InputType>{
-    abstract parse(input: InputType): Root;
+export abstract class Parser<InputType> {
+  abstract parse(input: InputType): Root;
 }
