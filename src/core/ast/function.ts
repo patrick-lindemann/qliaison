@@ -6,7 +6,7 @@ export class FunctionNode extends AstNode {
     identifier: string;
     parameters: AstNode[];
 
-    constructor(identifier: string, parameters: AstNode[]) {
+    constructor(identifier: string, ...parameters: AstNode[]) {
         super();
         this.identifier = identifier;
         this.parameters = parameters;
