@@ -1,25 +1,13 @@
-import type {
-    ArrayNode,
-    FunctionNode,
-    InfixOperationNode,
-    PostfixOperationNode,
-    PrefixOperationNode,
-    RootNode,
-    ValueNode,
-    VariableNode
-} from '../ast';
+import type { Array, AstNode, BinaryOperation, Function, Root, UnaryOperation, Value, Variable } from 'core/ast';
 
 export abstract class Visitor<OutputType> {
 
-    abstract visitRootNode(node: RootNode): OutputType;
-    abstract visitPrefixOperatorNode(node: PrefixOperationNode): unknown;
-    abstract visitPostfixOperatorNode(node: PostfixOperationNode): unknown;
-    abstract visitInfixOperatorNode(node: InfixOperationNode): unknown;
-    abstract visitVariableNode(node: VariableNode): unknown;
-    abstract visitFunctionNode(node: FunctionNode): unknown;
-    abstract visitArrayNode(node: ArrayNode): unknown;
-    abstract visitValueNode(node: ValueNode): unknown;
+    abstract visitRoot(root: Root): OutputType;
+    abstract visitUnaryOperation(operation: UnaryOperation): unknown;
+    abstract visitBinaryOperation(operation: BinaryOperation): unknown;
+    abstract visitFunction(func: Function): unknown;
+    abstract visitVariable(variable: Variable): unknown;
+    abstract visitArray<T extends AstNode>(array: Array<T>) : unknown;
+    abstract visitValue(value: Value): unknown;
 
 }
-
-export default Visitor;

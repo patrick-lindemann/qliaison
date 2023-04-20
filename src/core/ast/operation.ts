@@ -1,60 +1,31 @@
-import type { Visitor } from '../visitor';
+import { Visitor } from 'core/visitor';
 import { AstNode } from './ast';
 
-export abstract class OperationNode extends AstNode {
+/* Abstract classes */
 
-    operator: string;
-
-    constructor(operator: string) {
+export abstract class Operation extends AstNode {
+    constructor(public operator: string) {
         super();
         this.operator = operator;
     }
-
 }
 
-export class PrefixOperationNode extends OperationNode {
-
-    right: AstNode;
-
-    constructor(operator: string, right: AstNode) {
+export abstract class UnaryOperation extends Operation {
+    constructor(public operator: string, public value: AstNode) {
         super(operator);
-        this.right = right;
     }
-
-    accept<T>(v: Visitor<T>): unknown {
-        return v.visitPrefixOperatorNode(this);
+    accept<T>(visitor: Visitor<T>): unknown {
+        return visitor.visitUnaryOperation(this);
     }
-
 }
 
-export class PostfixOperationNode extends OperationNode {
-
-    left: AstNode;
-
-    constructor(operator: string, left: AstNode) {
-        super(operator);
-        this.left = left;
-    }
-
-    accept<T>(v: Visitor<T>): unknown {
-        return v.visitPostfixOperatorNode(this);
-    }
-
-}
-
-export class InfixOperationNode extends OperationNode {
-
-    left: AstNode;
-    right: AstNode;
-
-    constructor(operator: string, left: AstNode, right: AstNode) {
+export abstract class BinaryOperation extends Operation {
+    constructor(public operator: string, public left: AstNode, public right: AstNode) {
         super(operator);
         this.left = left;
         this.right = right;
     }
-
-    accept<T>(v: Visitor<T>): unknown {
-        return v.visitInfixOperatorNode(this);
+    accept<T>(visitor: Visitor<T>): unknown {
+        return visitor.visitBinaryOperation(this);
     }
-
 }

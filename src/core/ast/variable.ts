@@ -1,19 +1,12 @@
-import type { Visitor } from '../visitor';
+import type { Visitor } from 'core/visitor';
 import { AstNode } from './ast';
 
-export class VariableNode extends AstNode {
-
-    identifier: string;
-
-    constructor(identifier: string) {
+export class Variable extends AstNode {
+    constructor(public identifier: string) {
         super();
         this.identifier = identifier;
     }
-
-    accept<T>(v: Visitor<T>): unknown {
-        return v.visitVariableNode(this);
+    accept<T>(visitor: Visitor<T>): unknown {
+        return visitor.visitVariable(this);
     }
-
 }
-
-export default VariableNode;

@@ -1,19 +1,15 @@
-import type { Visitor } from '../visitor';
+import type { Visitor } from 'core/visitor';
 import { AstNode } from './ast';
+import type { Value } from './value';
 
-export class ArrayNode extends AstNode {
+/* Classes */
 
-    items: AstNode[];
-
-    constructor(...items: AstNode[]) {
+export class Array<ItemType extends AstNode = Value> extends AstNode {
+    constructor(public items: AstNode[]) {
         super();
         this.items = items;
     }
-
-    accept<T>(v: Visitor<T>): unknown {
-        return v.visitArrayNode(this);
+    accept<T>(visitor: Visitor<T>): unknown {
+        return visitor.visitArray<ItemType>(this);
     }
-
 }
-
-export default ArrayNode;

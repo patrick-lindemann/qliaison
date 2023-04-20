@@ -1,19 +1,14 @@
-import type { Visitor } from '../visitor';
+import type { Visitor } from 'core/visitor';
 import { AstNode } from './ast';
 
-export class RootNode extends AstNode {
+/* Classes */
 
-    child?: AstNode;
-
-    constructor(child?: AstNode) {
+export class Root extends AstNode {
+    constructor(public child?: AstNode) {
         super();
         this.child = child;
     }
-
-    accept<T>(v: Visitor<T>): T {
-        return v.visitRootNode(this);
+    accept<T>(visitor: Visitor<T>): T {
+        return visitor.visitRoot(this);
     }
-
 }
-
-export default RootNode;

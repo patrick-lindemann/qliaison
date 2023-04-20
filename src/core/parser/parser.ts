@@ -1,9 +1,5 @@
-import { RootNode } from '../ast';
+import { Root } from '../ast';
 
 export abstract class Parser<InputType>{
-
-    abstract parse(input: InputType): RootNode;
-
+    abstract parse(input: InputType): Root;
 }
-
-export default Parser;

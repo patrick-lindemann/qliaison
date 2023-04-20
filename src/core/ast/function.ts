@@ -1,21 +1,15 @@
-import type { Visitor } from '../visitor';
+import type { Visitor } from 'core/visitor';
 import { AstNode } from './ast';
 
-export class FunctionNode extends AstNode {
+/* Classes */
 
-    identifier: string;
-    parameters: AstNode[];
-
-    constructor(identifier: string, ...parameters: AstNode[]) {
+export class Function extends AstNode {
+    constructor(public identifier: string, public parameters: AstNode[]) {
         super();
         this.identifier = identifier;
         this.parameters = parameters;
     }
-
-    accept<T>(v: Visitor<T>): unknown {
-        return v.visitFunctionNode(this);
+    accept<T>(visitor: Visitor<T>): unknown {
+        return visitor.visitFunction(this);
     }
-
 }
-
-export default FunctionNode;
