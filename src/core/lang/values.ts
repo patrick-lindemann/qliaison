@@ -1,4 +1,4 @@
-import { ArrayNode, AstNode, ValueNode } from 'core/ast';
+import { ArrayNode, ValueNode } from 'core/ast';
 
 /* Types */
 
@@ -51,8 +51,8 @@ export class String extends ValueNode {
 
 // Arrays
 
-export class Array extends ArrayNode {
-    constructor(...items: AstNode[]) {
+export class Array<T extends Value> extends ArrayNode {
+    constructor(...items: T[]) {
         super(...items);
     }
 }
