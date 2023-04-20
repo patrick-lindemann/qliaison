@@ -31,7 +31,7 @@ export class PostfixOperationNode extends OperationNode {
 
     left: AstNode;
 
-    constructor(left: AstNode, operator: string) {
+    constructor(operator: string, left: AstNode) {
         super(operator);
         this.left = left;
     }
@@ -47,7 +47,7 @@ export class InfixOperationNode extends OperationNode {
     left: AstNode;
     right: AstNode;
 
-    constructor(left: AstNode, operator: string, right: AstNode) {
+    constructor(operator: string, left: AstNode, right: AstNode) {
         super(operator);
         this.left = left;
         this.right = right;

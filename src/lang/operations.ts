@@ -62,13 +62,13 @@ export class Not extends PrefixOperationNode {
 
 export class And extends InfixOperationNode {
     constructor(left: Condition | Comparison, right: Condition | Comparison) {
-        super(left, 'and', right);
+        super('and', left, right);
     }
 }
 
 export class Or extends InfixOperationNode {
     constructor(left: Condition | Comparison, right: Condition | Comparison) {
-        super(left, 'or', right);
+        super('or', left, right);
     }
 }
 
@@ -76,78 +76,78 @@ export class Or extends InfixOperationNode {
 
 export class Equals extends InfixOperationNode {
     constructor(left: Variable, right: Value) {
-        super(left, 'eq', right);
+        super('eq', left, right);
     }
 }
 
 export class NotEquals extends InfixOperationNode {
     constructor(left: Variable, right: Value) {
-        super(left, 'neq', right);
+        super('neq', left, right);
     }
 }
 
 export class LessThan extends InfixOperationNode {
     constructor(left: Variable, right: Number) {
-        super(left, 'lt', right);
+        super('lt', left, right);
     }
 }
 
 export class LessThanEquals extends InfixOperationNode {
     constructor(left: Variable, right: Number) {
-        super(left, 'lte', right);
+        super('lte', left, right);
     }
 }
 
 export class GreaterThan extends InfixOperationNode {
     constructor(left: Variable, right: Number) {
-        super(left, 'gt', right);
+        super('gt', left, right);
     }
 }
 
 export class GreaterThanEquals extends InfixOperationNode {
     constructor(left: Variable, right: Number) {
-        super(left, 'gte', right);
+        super('gte', left, right);
     }
 }
 
 export class Like extends InfixOperationNode {
     constructor(left: Variable, right: String) {
-        super(left, 'like', right);
+        super('like', left, right);
     }
 }
 
 export class IsNull extends PostfixOperationNode {
     constructor(left: Variable) {
-        super(left, 'is_null');
+        super('is_null', left);
     }
 }
 
 export class IsNotNull extends PostfixOperationNode {
     constructor(left: Variable) {
-        super(left, 'is_not_null');
+        super('is_not_null', left);
     }
 }
 
 export class IsEmpty extends PostfixOperationNode {
     constructor(left: Variable) {
-        super(left, 'is_empty');
+        super('is_empty', left);
     }
 }
 
 export class IsNotEmpty extends PostfixOperationNode {
     constructor(left: Variable) {
-        super(left, 'is_not_empty');
+        super('is_not_empty', left);
     }
 }
 
 export class In extends InfixOperationNode {
     constructor(left: Variable, right: Array<Value>) {
-        super(left, 'in', right);
+        super('in', left, right);
     }
 }
 
 export class NotIn extends InfixOperationNode {
     constructor(left: Variable, right: Array<Value>) {
-        super(left, 'not_in', right);
+        super('not_in', left, right);
     }
 }
