@@ -28,6 +28,7 @@ export { Function } from './function';
 export { Keyword, keywords } from './keywords';
 export { BinaryOperation, Operation, UnaryOperation } from './operation';
 export { Root } from './root';
+export { SymbolTable, symbols } from './symbols';
 export {
   Boolean,
   Date,
