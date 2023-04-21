@@ -1,4 +1,4 @@
-import { Visitor } from 'core/visitor';
+import { Visitor } from 'base/visitor';
 import { AstNode } from './ast';
 
 /* Abstract Classes */

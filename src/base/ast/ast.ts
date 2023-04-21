@@ -1,4 +1,4 @@
-import type { Visitor } from 'core/visitor';
+import type { Visitor } from 'base/visitor';
 
 /* Abstract Classes */
 

@@ -8,8 +8,8 @@ import {
   Value,
   Variable,
   symbols
-} from 'core/ast';
-import { Visitor } from 'core/visitor';
+} from 'base/ast';
+import { Visitor } from 'base/visitor';
 
 export class QueryStringSerializer extends Visitor<string> {
   visitRoot(root: Root): string {

@@ -1,4 +1,4 @@
-import type { Visitor } from 'core/visitor';
+import type { Visitor } from 'base/visitor';
 import { AstNode } from './ast';
 import type { Value } from './value';
 

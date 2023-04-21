@@ -9,9 +9,9 @@ import type {
   UnaryOperation,
   Value,
   Variable
-} from 'core/ast';
-import { keywords } from 'core/ast';
-import { Builder } from 'core/builder';
+} from 'base/ast';
+import { keywords } from 'base/ast';
+import { Builder } from 'base/builder';
 
 /* Types */
 

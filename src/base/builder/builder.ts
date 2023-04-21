@@ -27,7 +27,7 @@ import {
   Value,
   Variable,
   keywords
-} from 'core/ast';
+} from 'base/ast';
 
 /* Types */
 
