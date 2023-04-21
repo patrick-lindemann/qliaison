@@ -18,13 +18,11 @@ export const comparators = [
   'gt',
   'gte',
   'like',
-  'is_empty',
-  'is_not_empty',
-  'is_null',
-  'is_not_null',
+  'is',
+  'is_not',
   'in',
   'not_in'
-];
+] as const;
 
 /* Abstract Classes */
 

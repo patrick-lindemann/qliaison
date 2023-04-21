@@ -4,7 +4,7 @@ import { ConditionOperator } from './condition';
 /* Types */
 
 export type SymbolTable = {
-  [key: ConditionOperator | Comparator]: string;
+  [key in ConditionOperator | Comparator]: string;
 };
 
 /* Constants */
@@ -21,7 +21,7 @@ export const symbols: SymbolTable = {
   gte: '>=',
   like: '~',
   is: 'is',
-  ist_not: 'is not',
+  is_not: 'is not',
   in: 'in',
   not_in: 'not in'
-};
+} as const;

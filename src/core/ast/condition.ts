@@ -8,7 +8,7 @@ export type ConditionOperator = (typeof conditionOperators)[number];
 
 /* Constants */
 
-export const conditionOperators = ['not', 'and', 'or'];
+export const conditionOperators = ['not', 'and', 'or'] as const;
 
 /* Abstract Classes */
 
