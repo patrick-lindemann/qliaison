@@ -61,7 +61,7 @@ export class StringValue extends Value implements Comparable, Likeable {
 }
 
 export class DateValue extends Value implements Comparable, Orderable {
-  constructor(public value: DateValue) {
+  constructor(public value: Date) {
     super('date', value);
   }
 }
