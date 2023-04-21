@@ -13,8 +13,9 @@ export abstract class Operation extends AstNode {
 /* Classes */
 
 export class UnaryOperation extends Operation {
-  constructor(public operator: string, public value: AstNode) {
+  constructor(public operator: string, public right: AstNode) {
     super(operator);
+    this.right = right;
   }
   accept<T>(visitor: Visitor<T>): unknown {
     return visitor.visitUnaryOperation(this);
