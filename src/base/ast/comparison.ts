@@ -1,16 +1,31 @@
+import type { Array } from './array';
 import type { AstNode } from './ast';
 import { BinaryOperation } from './operation';
-import type { Variable } from './variable';
+import type {
+  BooleanValue,
+  DateValue,
+  EmptyValue,
+  NullValue,
+  NumberValue,
+  StringValue,
+  Value
+} from './value';
+import { Variable } from './variable';
 
 /* Types */
 
 export type Comparator = (typeof comparators)[number];
 
-export interface Comparable extends AstNode {}
-export interface Orderable extends AstNode {}
-export interface Likeable extends AstNode {}
-export interface Isable extends AstNode {}
-export interface Inable extends AstNode {}
+export type Comparable =
+  | NullValue
+  | BooleanValue
+  | NumberValue
+  | StringValue
+  | DateValue;
+export type Orderable = NumberValue | DateValue;
+export type Likeable = StringValue;
+export type Isable = NullValue | EmptyValue;
+export type Inable = Array<Value>;
 
 /* Constants */
 
@@ -32,11 +47,11 @@ export const comparators = [
 
 export abstract class Comparison extends BinaryOperation {
   constructor(
-    public comparator: Comparator,
+    public operator: Comparator,
     public left: AstNode,
     public right: AstNode
   ) {
-    super(comparator, left, right);
+    super(operator, left, right);
   }
 }
 

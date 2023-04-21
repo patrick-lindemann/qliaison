@@ -1,6 +1,5 @@
 import type { Visitor } from 'base/visitor';
 import { AstNode } from './ast';
-import { Comparable, Isable, Likeable, Orderable } from './comparison';
 
 /* Types */
 
@@ -30,37 +29,37 @@ export class Value extends AstNode {
   }
 }
 
-export class NullValue extends Value implements Comparable, Isable {
+export class NullValue extends Value {
   constructor() {
     super('null', null);
   }
 }
 
-export class EmptyValue extends Value implements Isable {
+export class EmptyValue extends Value {
   constructor() {
     super('empty', '');
   }
 }
 
-export class BooleanValue extends Value implements Comparable {
+export class BooleanValue extends Value {
   constructor(public value: boolean) {
     super('boolean', value);
   }
 }
 
-export class NumberValue extends Value implements Comparable, Orderable {
+export class NumberValue extends Value {
   constructor(public value: number) {
     super('number', value);
   }
 }
 
-export class StringValue extends Value implements Comparable, Likeable {
+export class StringValue extends Value {
   constructor(public value: string) {
     super('string', value);
   }
 }
 
-export class DateValue extends Value implements Comparable, Orderable {
+export class DateValue extends Value {
   constructor(public value: Date) {
     super('date', value);
   }
