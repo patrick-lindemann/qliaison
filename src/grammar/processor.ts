@@ -108,8 +108,8 @@ export const listing: PostProcessor<any[]> = (d) => {
 
 // Values
 
-export const value: () => AstPostProcessor<Value> = () => {
-  return (d) => builder._value(d[0]);
+export const value: AstPostProcessor<Value> = (d) => {
+  return builder._value(d[0]);
 };
 
 export const _null: PostProcessor<null> = () => {

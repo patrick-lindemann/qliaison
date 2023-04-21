@@ -7,25 +7,25 @@ function id(d: any[]): any {
 }
 
 import {
-  _null,
-  array,
+  root,
+  operator,
+  unaryOperation,
   binaryOperation,
-  boolean,
-  float,
+  isOperation,
+  inOperation,
+  selector,
   func,
   identifier,
-  inOperation,
-  integer,
-  isOperation,
-  join,
+  array,
   listing,
-  nth,
-  operator,
-  root,
-  selector,
+  value,
+  _null,
+  boolean,
+  integer,
+  float,
   string,
-  unaryOperation,
-  value
+  join,
+  nth
 } from './processor';
 
 interface NearleyToken {
@@ -347,7 +347,7 @@ const grammar: Grammar = {
       symbols: ['in_operator$subexpression$1'],
       postprocess: operator('in')
     },
-    { name: 'value', symbols: ['literal'], postprocess: id },
+    { name: 'value', symbols: ['literal'], postprocess: value },
     { name: 'value', symbols: ['variable'], postprocess: id },
     {
       name: 'array',
@@ -473,11 +473,7 @@ const grammar: Grammar = {
         return d.join('');
       }
     },
-    {
-      name: '_null_',
-      symbols: ['_null_$subexpression$1'],
-      postprocess: _null
-    },
+    { name: '_null_', symbols: ['_null_$subexpression$1'], postprocess: _null },
     {
       name: '_empty_$subexpression$1',
       symbols: [/[eE]/, /[mM]/, /[pP]/, /[tT]/, /[yY]/],
@@ -485,11 +481,7 @@ const grammar: Grammar = {
         return d.join('');
       }
     },
-    {
-      name: '_empty_',
-      symbols: ['_empty_$subexpression$1'],
-      postprocess: id
-    }
+    { name: '_empty_', symbols: ['_empty_$subexpression$1'], postprocess: id }
   ],
   ParserStart: 'main'
 };

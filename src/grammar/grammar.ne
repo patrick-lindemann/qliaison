@@ -69,7 +69,7 @@ in_operator
     -> "in"i {% operator('in') %}
 
 value
-    -> literal  {% id %}
+    -> literal  {% value %}
     |  variable {% id %}
 
 array
