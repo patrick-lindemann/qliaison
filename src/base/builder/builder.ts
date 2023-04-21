@@ -2,10 +2,10 @@ import {
   And,
   Array,
   BinaryOperation,
-  Boolean,
+  BooleanValue,
   Comparison,
   Condition,
-  Empty,
+  EmptyValue,
   Equals,
   Function,
   GreaterThan,
@@ -18,11 +18,11 @@ import {
   Not,
   NotEquals,
   NotIn,
-  Null,
-  Number,
+  NullValue,
+  NumberValue,
   Or,
   Root,
-  String,
+  StringValue,
   UnaryOperation,
   Value,
   Variable,
@@ -112,14 +112,14 @@ export class Builder {
   is(identifier: string, value: 'null' | 'empty'): Comparison {
     return new Is(
       this.variable(identifier),
-      value == 'null' ? new Null() : new Empty()
+      value == 'null' ? new NullValue() : new EmptyValue()
     );
   }
 
   isNot(identifier: string, value: 'null' | 'empty'): Comparison {
     return new IsNot(
       this.variable(identifier),
-      value == 'null' ? new Null() : new Empty()
+      value == 'null' ? new NullValue() : new EmptyValue()
     );
   }
 
@@ -169,15 +169,15 @@ export class Builder {
 
   _value(value: NativeValue): Value {
     if (value == null) {
-      return new Null();
+      return new NullValue();
     }
     switch (typeof value) {
       case 'boolean':
-        return new Boolean(value);
+        return new BooleanValue(value);
       case 'number':
-        return new Number(value);
+        return new NumberValue(value);
       case 'string':
-        return new String(value);
+        return new StringValue(value);
     }
   }
 }

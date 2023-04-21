@@ -30,12 +30,12 @@ export { BinaryOperation, Operation, UnaryOperation } from './operation';
 export { Root } from './root';
 export { SymbolTable, symbols } from './symbols';
 export {
-  Boolean,
-  Date,
-  Empty,
-  Null,
-  Number,
-  String,
+  BooleanValue,
+  DateValue,
+  EmptyValue,
+  NullValue,
+  NumberValue,
+  StringValue,
   Type,
   Value,
   types

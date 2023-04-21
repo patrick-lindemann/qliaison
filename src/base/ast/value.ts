@@ -7,7 +7,14 @@ export type Type = (typeof types)[number];
 
 /* Constants */
 
-export const types = ['null', 'empty', 'boolean', 'number', 'string', 'date'];
+export const types = [
+  'null',
+  'empty',
+  'boolean',
+  'number',
+  'string',
+  'date'
+] as const;
 
 /* Classes */
 
@@ -22,38 +29,38 @@ export class Value extends AstNode {
   }
 }
 
-export class Null extends Value {
+export class NullValue extends Value {
   constructor() {
     super('null', null);
   }
 }
 
-export class Empty extends Value {
+export class EmptyValue extends Value {
   constructor() {
     super('empty', '');
   }
 }
 
-export class Boolean extends Value {
+export class BooleanValue extends Value {
   constructor(public value: boolean) {
     super('boolean', value);
   }
 }
 
-export class Number extends Value {
+export class NumberValue extends Value {
   constructor(public value: number) {
     super('number', value);
   }
 }
 
-export class String extends Value {
+export class StringValue extends Value {
   constructor(public value: string) {
     super('string', value);
   }
 }
 
-export class Date extends Value {
-  constructor(public value: Date) {
+export class DateValue extends Value {
+  constructor(public value: DateValue) {
     super('date', value);
   }
 }

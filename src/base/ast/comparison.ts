@@ -1,7 +1,13 @@
 import type { Array } from './array';
 import type { AstNode } from './ast';
 import { BinaryOperation } from './operation';
-import type { Empty, Null, Number, String, Value } from './value';
+import type {
+  EmptyValue,
+  NullValue,
+  NumberValue,
+  StringValue,
+  Value
+} from './value';
 import type { Variable } from './variable';
 
 /* Types */
@@ -51,43 +57,43 @@ export class NotEquals extends Comparison {
 }
 
 export class LessThan extends Comparison {
-  constructor(public left: Variable, public right: Number) {
+  constructor(public left: Variable, public right: NumberValue) {
     super('lt', left, right);
   }
 }
 
 export class LessThanEquals extends Comparison {
-  constructor(public left: Variable, public right: Number) {
+  constructor(public left: Variable, public right: NumberValue) {
     super('lte', left, right);
   }
 }
 
 export class GreaterThan extends Comparison {
-  constructor(public left: Variable, public right: Number) {
+  constructor(public left: Variable, public right: NumberValue) {
     super('gt', left, right);
   }
 }
 
 export class GreaterThanEquals extends Comparison {
-  constructor(public left: Variable, public right: Number) {
+  constructor(public left: Variable, public right: NumberValue) {
     super('gte', left, right);
   }
 }
 
 export class Like extends Comparison {
-  constructor(public left: Variable, public right: String) {
+  constructor(public left: Variable, public right: StringValue) {
     super('like', left, right);
   }
 }
 
 export class Is extends Comparison {
-  constructor(public left: Variable, public right: Null | Empty) {
+  constructor(public left: Variable, public right: NullValue | EmptyValue) {
     super('is', left, right);
   }
 }
 
 export class IsNot extends Comparison {
-  constructor(public left: Variable, public right: Null | Empty) {
+  constructor(public left: Variable, public right: NullValue | EmptyValue) {
     super('is_not', left, right);
   }
 }
