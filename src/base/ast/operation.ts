@@ -10,9 +10,7 @@ export abstract class Operation extends AstNode {
   }
 }
 
-/* Classes */
-
-export class UnaryOperation extends Operation {
+export abstract class UnaryOperation extends Operation {
   constructor(public operator: string, public right: AstNode) {
     super(operator);
     this.right = right;
@@ -22,7 +20,7 @@ export class UnaryOperation extends Operation {
   }
 }
 
-export class BinaryOperation extends Operation {
+export abstract class BinaryOperation extends Operation {
   constructor(
     public operator: string,
     public left: AstNode,

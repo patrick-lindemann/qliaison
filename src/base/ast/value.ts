@@ -16,9 +16,9 @@ export const types = [
   'date'
 ] as const;
 
-/* Classes */
+/* Abstract Classes */
 
-export class Value extends AstNode {
+export abstract class Value extends AstNode {
   constructor(public type: Type, public value: any) {
     super();
     this.type = type;
@@ -28,6 +28,8 @@ export class Value extends AstNode {
     return visitor.visitValue(this);
   }
 }
+
+/* Classes */
 
 export class NullValue extends Value {
   constructor() {

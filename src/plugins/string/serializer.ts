@@ -11,7 +11,7 @@ import {
 } from 'base/ast';
 import { Visitor } from 'base/visitor';
 
-export class QueryStringSerializer extends Visitor<string> {
+export class StringSerializer extends Visitor<string> {
   visitRoot(root: Root): string {
     if (!root.child) {
       return '';
@@ -21,7 +21,7 @@ export class QueryStringSerializer extends Visitor<string> {
 
   visitUnaryOperation(operation: UnaryOperation): unknown {
     const operator = symbols[operation.operator];
-    const value = operation.value.accept(this);
+    const value = operation.right.accept(this);
     return `${operator} ${value}`;
   }
 

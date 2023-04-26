@@ -1,10 +1,10 @@
 import {
   And,
   Array,
-  BinaryOperation,
   BooleanValue,
   Comparison,
   Condition,
+  DateValue,
   EmptyValue,
   Equals,
   Function,
@@ -23,7 +23,6 @@ import {
   Or,
   Root,
   StringValue,
-  UnaryOperation,
   Value,
   Variable,
   keywords
@@ -31,8 +30,8 @@ import {
 
 /* Types */
 
-export type NativeValue = null | boolean | number | string;
 export type Any = Comparison | Condition | Function | Variable | Array | Value;
+export type PrimitiveValue = null | boolean | number | string | Date;
 
 /* Classes */
 
@@ -85,27 +84,27 @@ export class Builder {
 
   /* Comparators */
 
-  eq(identifier: string, value: NativeValue): Comparison {
+  eq(identifier: string, value: PrimitiveValue): Comparison {
     return new Equals(this.variable(identifier), this._value(value));
   }
 
-  neq(identifier: string, value: NativeValue): Comparison {
+  neq(identifier: string, value: PrimitiveValue): Comparison {
     return new NotEquals(this.variable(identifier), this._value(value));
   }
 
-  lt(identifier: string, value: NativeValue): Comparison {
+  lt(identifier: string, value: PrimitiveValue): Comparison {
     return new LessThan(this.variable(identifier), this._value(value));
   }
 
-  lte(identifier: string, value: NativeValue): Comparison {
+  lte(identifier: string, value: PrimitiveValue): Comparison {
     return new LessThanEquals(this.variable(identifier), this._value(value));
   }
 
-  gt(identifier: string, value: NativeValue): Comparison {
+  gt(identifier: string, value: PrimitiveValue): Comparison {
     return new GreaterThan(this.variable(identifier), this._value(value));
   }
 
-  like(identifier: string, value: NativeValue): Comparison {
+  like(identifier: string, value: PrimitiveValue): Comparison {
     return new Like(this.variable(identifier), this._value(value));
   }
 
@@ -123,11 +122,11 @@ export class Builder {
     );
   }
 
-  in(identifier: string, array: NativeValue[]): Comparison {
+  in(identifier: string, array: PrimitiveValue[]): Comparison {
     return new In(this.variable(identifier), this._array(...array));
   }
 
-  notIn(identifier: string, array: NativeValue[]): Comparison {
+  notIn(identifier: string, array: PrimitiveValue[]): Comparison {
     return new NotIn(this.variable(identifier), this._array(...array));
   }
 
@@ -135,7 +134,7 @@ export class Builder {
 
   function(
     identifier: string,
-    ...parameters: (NativeValue | Variable)[]
+    ...parameters: (PrimitiveValue | Variable)[]
   ): Function {
     const paramNodes = parameters.map((param) =>
       param instanceof Variable ? param : this._value(param)
@@ -154,21 +153,13 @@ export class Builder {
 
   /* Helper Functions */
 
-  _unaryOperation(operator: string, value: Any): UnaryOperation {
-    return new UnaryOperation(operator, value);
-  }
-
-  _binaryOperation(operator: string, left: Any, right: Any): BinaryOperation {
-    return new BinaryOperation(operator, left, right);
-  }
-
-  _array(...items: NativeValue[]): Array<Value> {
+  _array(...items: PrimitiveValue[]): Array<Value> {
     const mappedItems = items.map((item) => this._value(item));
     return new Array(mappedItems);
   }
 
-  _value(value: NativeValue): Value {
-    if (value == null) {
+  _value(value: PrimitiveValue): Value {
+    if (value === null) {
       return new NullValue();
     }
     switch (typeof value) {
@@ -179,5 +170,9 @@ export class Builder {
       case 'string':
         return new StringValue(value);
     }
+    if (value instanceof Date) {
+      return new DateValue(value);
+    }
+    throw new Error(); // TODO: Error Message
   }
 }

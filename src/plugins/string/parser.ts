@@ -3,7 +3,7 @@ import { Parser } from 'base/parser';
 import { grammar } from 'grammar';
 import { Grammar, Parser as NearleyParser } from 'nearley';
 
-export class QueryStringParser extends Parser<string> {
+export class StringParser extends Parser<string> {
   protected _grammar: Grammar;
 
   constructor() {

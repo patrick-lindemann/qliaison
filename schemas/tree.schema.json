@@ -1,0 +1,102 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "type": "object",
+  "properties": {
+    "root": {
+      "$ref": "#/$defs/root"
+    }
+  },
+  "$defs": {
+    "node": {
+      "type": "object",
+      "properties": {
+        "type": "string"
+      }
+    },
+    "root": {
+      "type": "object",
+      "properties": {
+        "child": {
+          "$ref": "#/$defs/node"
+        }
+      }
+    },
+    "unaryOperation": {
+      "type": "object",
+      "properties": {
+        "operator": {
+          "type": "string",
+          "enum": ["not"]
+        },
+        "right": {
+          "$ref": "#/$defs/node"
+        }
+      },
+      "required": ["operator", "right"]
+    },
+    "binaryOperation": {
+      "type": "object",
+      "properties": {
+        "operator": {
+          "type": "string",
+          "enum": [
+            "and",
+            "or",
+            "eq",
+            "neq",
+            "lt",
+            "lte",
+            "gt",
+            "gte",
+            "like",
+            "is",
+            "is_not",
+            "in",
+            "not_in"
+          ]
+        },
+        "left": {
+          "$ref": "#/$defs/node"
+        },
+        "right": {
+          "$ref": "#/$defs/node"
+        }
+      },
+      "required": ["operator", "left", "right"]
+    },
+    "function": {
+      "type": "object",
+      "properties": {
+        "identifier": {
+          "type": "string"
+        },
+        "parameters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/node"
+          }
+        }
+      }
+    },
+    "variable": {
+      "type": "object",
+      "properties": {
+        "identifier": {
+          "type": "string"
+        }
+      }
+    },
+    "value": {
+      "type": "object",
+      "properties": {
+        "valueType": {
+          "type": "string",
+          "enum": ["null", "boolean", "number", "string", "date"]
+        },
+        "value": {
+          "type": "any"
+        }
+      }
+    }
+  }
+}
