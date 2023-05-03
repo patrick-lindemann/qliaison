@@ -1,5 +1,5 @@
 import { Visitor } from 'base/visitor';
-import { AstNode } from './ast';
+import { AstNode } from './node';
 
 /* Abstract Classes */
 

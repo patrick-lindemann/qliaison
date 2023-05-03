@@ -1,14 +1,9 @@
 import type { Visitor } from 'base/visitor';
-import type { Inable } from '../../lang/defs/comparison';
-import { AstNode } from './ast';
-import type { Value } from './value';
+import { AstNode } from './node';
 
 /* Classes */
 
-export class Array<ItemType extends AstNode = Value>
-  extends AstNode
-  implements Inable
-{
+export class Array<ItemType extends AstNode> extends AstNode {
   constructor(public items: AstNode[]) {
     super();
     this.items = items;
