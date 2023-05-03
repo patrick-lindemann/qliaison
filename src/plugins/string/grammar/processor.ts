@@ -46,24 +46,24 @@ export const operator: (
 
 export const unaryOperation: AstPostProcessor<UnaryOperation> = (d) => {
   const [$operator, right] = [d[0], d[2]];
-  return builder.unaryOperation($operator, right);
+  return builder[$operator](right);
 };
 
 export const binaryOperation: AstPostProcessor<BinaryOperation> = (d) => {
   const [left, $operator, right] = [d[0], d[2], d[4]];
-  return builder.binaryOperation($operator, left, right);
+  return builder[$operator](left, right);
 };
 
 export const isOperation: AstPostProcessor<BinaryOperation> = (d) => {
   const [left, $is, $not, right] = [d[0], d[2], d[4], d[5][0]];
   const operator = $is + '_' + ($not ? $not : '');
-  return builder.binaryOperation(operator, left, right.toLowerCase());
+  return builder[operator](left, right.toLowerCase());
 };
 
 export const inOperation: AstPostProcessor<BinaryOperation> = (d) => {
   const [left, $not, $in, right] = [d[0], d[2], d[3], d[5]];
   const operator = ($not ? $not + '_' : '') + $in;
-  return builder.binaryOperation(operator, left, right);
+  return builder[operator](left, right);
 };
 
 // Variables & Functions
