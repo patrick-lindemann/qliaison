@@ -1,6 +1,6 @@
 import type { Visitor } from 'base/visitor';
+import type { Inable } from '../../lang/defs/comparison';
 import { AstNode } from './ast';
-import type { Inable } from './comparison';
 import type { Value } from './value';
 
 /* Classes */
