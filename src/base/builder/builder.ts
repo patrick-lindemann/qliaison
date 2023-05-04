@@ -42,7 +42,7 @@ export type Any =
   | Variable
   | Array<Value>
   | Value;
-export type PrimitiveValue = null | boolean | number | string | Date;
+export type Literal = null | boolean | number | string | Date;
 
 /* Classes */
 
@@ -75,7 +75,7 @@ export class LowLevelBuilder {
     return new Array(items);
   }
 
-  value(type: Type, value: AstNode): Value {
+  value(type: Type, value: any): Value {
     return new Value(type, value);
   }
 }
@@ -123,27 +123,27 @@ export class Builder {
     ) as Condition;
   }
 
-  eq(identifier: string, value: PrimitiveValue): Comparison {
+  eq(identifier: string, value: Literal): Comparison {
     return new Equals(this.variable(identifier), this.value(value));
   }
 
-  neq(identifier: string, value: PrimitiveValue): Comparison {
+  neq(identifier: string, value: Literal): Comparison {
     return new NotEquals(this.variable(identifier), this.value(value));
   }
 
-  lt(identifier: string, value: PrimitiveValue): Comparison {
+  lt(identifier: string, value: Literal): Comparison {
     return new LessThan(this.variable(identifier), this.value(value));
   }
 
-  lte(identifier: string, value: PrimitiveValue): Comparison {
+  lte(identifier: string, value: Literal): Comparison {
     return new LessThanEquals(this.variable(identifier), this.value(value));
   }
 
-  gt(identifier: string, value: PrimitiveValue): Comparison {
+  gt(identifier: string, value: Literal): Comparison {
     return new GreaterThan(this.variable(identifier), this.value(value));
   }
 
-  like(identifier: string, value: PrimitiveValue): Comparison {
+  like(identifier: string, value: Literal): Comparison {
     return new Like(this.variable(identifier), this.value(value));
   }
 
@@ -161,17 +161,17 @@ export class Builder {
     );
   }
 
-  in(identifier: string, array: PrimitiveValue[]): Comparison {
+  in(identifier: string, array: Literal[]): Comparison {
     return new In(this.variable(identifier), this.array(array));
   }
 
-  notIn(identifier: string, array: PrimitiveValue[]): Comparison {
+  notIn(identifier: string, array: Literal[]): Comparison {
     return new NotIn(this.variable(identifier), this.array(array));
   }
 
   function(
     identifier: string,
-    ...parameters: (PrimitiveValue | Variable)[]
+    ...parameters: (Literal | Variable)[]
   ): Function {
     const paramNodes = parameters.map((param) =>
       param instanceof Variable ? param : this.value(param)
@@ -188,12 +188,12 @@ export class Builder {
     return new Variable(identifier);
   }
 
-  protected array(items: PrimitiveValue[]): Array<Value> {
+  protected array(items: Literal[]): Array<Value> {
     const mappedItems = items.map((item) => this.value(item));
     return new Array(mappedItems);
   }
 
-  protected value(value: PrimitiveValue): Value {
+  protected value(value: Literal): Value {
     if (value === null) {
       return new NullValue();
     }
