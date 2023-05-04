@@ -1,1 +1,1 @@
-export { Builder } from './builder';
+export { Builder, LowLevelBuilder } from './builder';
