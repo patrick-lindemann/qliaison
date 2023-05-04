@@ -13,9 +13,6 @@ export {
   GreaterThanEquals,
   In,
   Inable,
-  Is,
-  IsNot,
-  Isable,
   LessThan,
   LessThanEquals,
   Like,
@@ -36,7 +33,6 @@ export { Root } from './root';
 export {
   BooleanValue,
   DateValue,
-  EmptyValue,
   NullValue,
   NumberValue,
   StringValue,

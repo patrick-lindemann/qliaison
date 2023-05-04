@@ -27,8 +27,6 @@ export type Comparison =
   | GreaterThan
   | GreaterThanEquals
   | Like
-  | Is
-  | IsNot
   | In
   | NotIn;
 
@@ -55,8 +53,6 @@ export const comparators = [
   'gt',
   'gte',
   'like',
-  'is',
-  'is_not',
   'in',
   'not_in'
 ] as const;
@@ -164,18 +160,6 @@ export class GreaterThanEquals extends BinaryOperation {
 export class Like extends BinaryOperation {
   constructor(public left: Variable, public right: Likeable) {
     super('like', left, right);
-  }
-}
-
-export class Is extends BinaryOperation {
-  constructor(public left: Variable, public right: Isable) {
-    super('is', left, right);
-  }
-}
-
-export class IsNot extends BinaryOperation {
-  constructor(public left: Variable, public right: Isable) {
-    super('is_not', left, right);
   }
 }
 

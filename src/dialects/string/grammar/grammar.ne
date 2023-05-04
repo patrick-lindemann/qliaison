@@ -21,7 +21,6 @@ import {
     array,
     listing,
     _null,
-    empty,
     boolean,
     integer,
     float,
@@ -47,7 +46,6 @@ logical_operator
 
 comparison
     -> variable _ comparison_operator _ literal {% binaryOperation %}
-    |  variable __ is_operator __ empty_literal {% binaryOperation %}
     |  variable __ in_operator __ array         {% binaryOperation %}
     |  "(" _ condition _ ")"                    {% nth(2) %}
 
@@ -59,10 +57,6 @@ comparison_operator
     |  ">"  {% operator('gt') %}
     |  ">=" {% operator('gte') %}
     |  "~"  {% operator('like') %}
-
-is_operator
-    -> "is"i           {% operator('is') %}
-    |  "is"i __ "not"i {% operator('is_not') %}
 
 in_operator
     -> "in"i           {% operator('in') %}
@@ -96,15 +90,8 @@ literal
     |  number  {% id %}
     |  string  {% id %}
 
-empty_literal
-    -> _null_  {% id %}
-    |  _empty_ {% id %}
-
 _null_
     -> "null"i {% _null %}
-
-_empty_
-    -> "empty"i {% empty %}
 
 boolean
     -> "true"i  {% boolean %}

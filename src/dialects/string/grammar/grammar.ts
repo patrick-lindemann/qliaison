@@ -17,7 +17,6 @@ import {
   array,
   listing,
   _null,
-  empty,
   boolean,
   integer,
   float,
@@ -222,11 +221,6 @@ const grammar: Grammar = {
     },
     {
       name: 'comparison',
-      symbols: ['variable', '__', 'is_operator', '__', 'empty_literal'],
-      postprocess: binaryOperation
-    },
-    {
-      name: 'comparison',
       symbols: ['variable', '__', 'in_operator', '__', 'array'],
       postprocess: binaryOperation
     },
@@ -284,41 +278,6 @@ const grammar: Grammar = {
       name: 'comparison_operator',
       symbols: [{ literal: '~' }],
       postprocess: operator('like')
-    },
-    {
-      name: 'is_operator$subexpression$1',
-      symbols: [/[iI]/, /[sS]/],
-      postprocess: function (d) {
-        return d.join('');
-      }
-    },
-    {
-      name: 'is_operator',
-      symbols: ['is_operator$subexpression$1'],
-      postprocess: operator('is')
-    },
-    {
-      name: 'is_operator$subexpression$2',
-      symbols: [/[iI]/, /[sS]/],
-      postprocess: function (d) {
-        return d.join('');
-      }
-    },
-    {
-      name: 'is_operator$subexpression$3',
-      symbols: [/[nN]/, /[oO]/, /[tT]/],
-      postprocess: function (d) {
-        return d.join('');
-      }
-    },
-    {
-      name: 'is_operator',
-      symbols: [
-        'is_operator$subexpression$2',
-        '__',
-        'is_operator$subexpression$3'
-      ],
-      postprocess: operator('is_not')
     },
     {
       name: 'in_operator$subexpression$1',
@@ -403,8 +362,6 @@ const grammar: Grammar = {
     { name: 'literal', symbols: ['boolean'], postprocess: id },
     { name: 'literal', symbols: ['number'], postprocess: id },
     { name: 'literal', symbols: ['string'], postprocess: id },
-    { name: 'empty_literal', symbols: ['_null_'], postprocess: id },
-    { name: 'empty_literal', symbols: ['_empty_'], postprocess: id },
     {
       name: '_null_$subexpression$1',
       symbols: [/[nN]/, /[uU]/, /[lL]/, /[lL]/],
@@ -413,18 +370,6 @@ const grammar: Grammar = {
       }
     },
     { name: '_null_', symbols: ['_null_$subexpression$1'], postprocess: _null },
-    {
-      name: '_empty_$subexpression$1',
-      symbols: [/[eE]/, /[mM]/, /[pP]/, /[tT]/, /[yY]/],
-      postprocess: function (d) {
-        return d.join('');
-      }
-    },
-    {
-      name: '_empty_',
-      symbols: ['_empty_$subexpression$1'],
-      postprocess: empty
-    },
     {
       name: 'boolean$subexpression$1',
       symbols: [/[tT]/, /[rR]/, /[uU]/, /[eE]/],

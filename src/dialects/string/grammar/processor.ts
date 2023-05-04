@@ -97,10 +97,6 @@ export const _null: PostProcessor<ValueNode> = () => {
   return builder.value('null', null);
 };
 
-export const empty: PostProcessor<string> = () => {
-  return builder.value('empty', '');
-};
-
 export const boolean: PostProcessor<boolean> = (d) => {
   return builder.value('boolean', d[0].toLowerCase() === 'true');
 };

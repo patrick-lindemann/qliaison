@@ -7,31 +7,11 @@ const builder = new Builder();
 
 describe('values', () => {
   // Null
-  test('Null (equals)', () => {
+  test('Null', () => {
     expect(
       parser.parse('var = null') //
     ).toEqual(
       builder.root(builder.eq('var', null)) //
-    );
-  });
-  test('Null (with is)', () => {
-    expect(
-      parser.parse('var is null') //
-    ).toEqual(
-      builder.root(builder.is('var', null)) //
-    );
-  });
-  // Empty
-  test('Empty (with equals)', () => {
-    expect(
-      () => parser.parse('var = empty') //
-    ).toThrowError();
-  });
-  test('Empty (with is)', () => {
-    expect(
-      parser.parse('var is empty') //
-    ).toEqual(
-      builder.root(builder.is('var', 'empty')) //
     );
   });
   // Boolean
@@ -149,34 +129,6 @@ describe('Comparisons', () => {
       parser.parse('var ~ "%pattern%"') //
     ).toEqual(
       builder.root(builder.like('var', '%pattern%')) //
-    );
-  });
-  test('Is (null)', () => {
-    expect(
-      parser.parse('var is null') //
-    ).toEqual(
-      builder.root(builder.is('var', null)) //
-    );
-  });
-  test('Is (empty)', () => {
-    expect(
-      parser.parse('var is empty') //
-    ).toEqual(
-      builder.root(builder.is('var', 'empty')) //
-    );
-  });
-  test('IsNot (null)', () => {
-    expect(
-      parser.parse('var is not null') //
-    ).toEqual(
-      builder.root(builder.isNot('var', null)) //
-    );
-  });
-  test('IsNot (empty)', () => {
-    expect(
-      parser.parse('var is not empty') //
-    ).toEqual(
-      builder.root(builder.isNot('var', 'empty')) //
     );
   });
   test('In (empty array)', () => {

@@ -19,8 +19,6 @@ export const symbols: SymbolTable = {
   gt: '>',
   gte: '>=',
   like: '~',
-  is: 'is',
-  is_not: 'is not',
   in: 'in',
   not_in: 'not in'
 } as const;

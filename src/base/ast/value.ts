@@ -58,9 +58,3 @@ export class DateValue extends Value {
     super('date', value);
   }
 }
-
-export class EmptyValue extends Value {
-  constructor() {
-    super('empty', '');
-  }
-}

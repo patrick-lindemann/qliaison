@@ -7,14 +7,11 @@ import {
   Comparison,
   Condition,
   DateValue,
-  EmptyValue,
   Equals,
   Function,
   GreaterThan,
   GreaterThanEquals,
   In,
-  Is,
-  IsNot,
   LessThan,
   LessThanEquals,
   Like,
@@ -150,20 +147,6 @@ export class Builder {
 
   like(identifier: string, value: Literal): Comparison {
     return new Like(this.variable(identifier), this.value(value));
-  }
-
-  is(identifier: string, value: null | 'empty'): Comparison {
-    return new Is(
-      this.variable(identifier),
-      value === null ? new NullValue() : new EmptyValue()
-    );
-  }
-
-  isNot(identifier: string, value: null | 'empty'): Comparison {
-    return new IsNot(
-      this.variable(identifier),
-      value === null ? new NullValue() : new EmptyValue()
-    );
   }
 
   in(identifier: string, array: Literal[]): Comparison {
