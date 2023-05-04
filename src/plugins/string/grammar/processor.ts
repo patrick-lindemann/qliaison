@@ -1,17 +1,16 @@
 import type {
   Array as ArrayNode,
   AstNode,
-  BinaryOperation,
-  Comparator,
-  ConditionOperator,
-  Function,
-  Root,
-  UnaryOperation,
-  Value,
-  Variable
+  BinaryOperation as BinaryOperationNode,
+  Function as FunctionNode,
+  Operator,
+  Root as RootNode,
+  UnaryOperation as UnaryOperationNode,
+  Value as ValueNode,
+  Variable as VariableNode
 } from 'base/ast';
-import { keywords } from 'base/ast';
-import { Builder } from 'base/builder';
+import { LowLevelBuilder } from 'base/builder';
+import { keywords } from 'base/keywords';
 
 /* Types */
 
@@ -25,55 +24,53 @@ export type AstPostProcessor<T extends AstNode> = PostProcessor<T>;
 
 /* Constants */
 
-const builder = new Builder();
+const builder = new LowLevelBuilder();
 
 /* Functions */
 
 // Root
 
-export const root: AstPostProcessor<Root> = (d) => {
+export const root: AstPostProcessor<RootNode> = (d) => {
   const root = d[1];
   return builder.root(root || undefined);
 };
 
 // Operations
 
-export const operator: (
-  type: ConditionOperator | Comparator
-) => PostProcessor<ConditionOperator | Comparator> = (type) => {
+export const operator: (type: Operator) => PostProcessor<Operator> = (type) => {
   return () => type;
 };
 
-export const unaryOperation: AstPostProcessor<UnaryOperation> = (d) => {
+export const unaryOperation: AstPostProcessor<UnaryOperationNode> = (d) => {
   const [$operator, right] = [d[0], d[2]];
-  return builder[$operator](right);
+  return builder.unaryOperation($operator, right);
 };
 
-export const binaryOperation: AstPostProcessor<BinaryOperation> = (d) => {
+export const binaryOperation: AstPostProcessor<BinaryOperationNode> = (d) => {
   const [left, $operator, right] = [d[0], d[2], d[4]];
-  return builder[$operator](left, right);
+  return builder.binaryOperation($operator, left, right);
 };
 
-export const isOperation: AstPostProcessor<BinaryOperation> = (d) => {
+export const isOperation: AstPostProcessor<BinaryOperationNode> = (d) => {
   const [left, $is, $not, right] = [d[0], d[2], d[4], d[5][0]];
-  const operator = $is + '_' + ($not ? $not : '');
-  return builder[operator](left, right.toLowerCase());
+  const operator = ($is + '_' + ($not ? $not : '')) as 'is' | 'not_is';
+  return builder.binaryOperation(operator, left, right);
 };
 
-export const inOperation: AstPostProcessor<BinaryOperation> = (d) => {
+export const inOperation: AstPostProcessor<BinaryOperationNode> = (d) => {
   const [left, $not, $in, right] = [d[0], d[2], d[3], d[5]];
-  const operator = ($not ? $not + '_' : '') + $in;
-  return builder[operator](left, right);
+  const operator = (($not ? $not + '_' : '') + $in) as 'in' | 'not_in';
+  return builder.binaryOperation(operator, left, right);
 };
 
 // Variables & Functions
 
-export const selector: AstPostProcessor<Variable> = (d) => {
+export const selector: AstPostProcessor<VariableNode> = (d) => {
   const selector = d[0];
   return builder.variable(selector);
 };
 
-export const func: AstPostProcessor<Function> = (d) => {
+export const fn: AstPostProcessor<FunctionNode> = (d) => {
   const [identifier, parameters] = [d[0], d[4]];
   return builder.function(identifier, parameters);
 };
@@ -89,9 +86,9 @@ export const identifier: PostProcessor<string> = (d, _, reject) => {
 
 // Arrays
 
-export const array: AstPostProcessor<ArrayNode> = (d) => {
+export const array: AstPostProcessor<ArrayNode<ValueNode>> = (d) => {
   const items = d[2] || [];
-  return builder._array(items);
+  return builder.array(items);
 };
 
 export const listing: PostProcessor<any[]> = (d) => {
@@ -108,30 +105,30 @@ export const listing: PostProcessor<any[]> = (d) => {
 
 // Values
 
-export const value: AstPostProcessor<Value> = (d) => {
-  return builder._value(d[0]);
+export const _null: PostProcessor<ValueNode> = () => {
+  return builder.value('null', null);
 };
 
-export const _null: PostProcessor<null> = () => {
-  return null;
+export const empty: PostProcessor<string> = () => {
+  return builder.value('empty', '');
 };
 
 export const boolean: PostProcessor<boolean> = (d) => {
-  return d[0].toLowerCase() === 'true';
+  return builder.value('boolean', d[0].toLowerCase() === 'true');
 };
 
 export const integer: PostProcessor<number> = (d) => {
   const str = (d[0] ? d[0][0] : '') + d[1].join('');
-  return parseInt(str);
+  return builder.value('number', parseInt(str));
 };
 
 export const float: PostProcessor<number> = (d) => {
   const str = (d[0] ? d[0][0] : '') + d[1].join('') + '.' + d[3].join('');
-  return parseFloat(str);
+  return builder.value('number', parseFloat(str));
 };
 
 export const string: PostProcessor<string> = (d) => {
-  return d[0];
+  return builder.value('string', d[0]);
 };
 
 // Helpers

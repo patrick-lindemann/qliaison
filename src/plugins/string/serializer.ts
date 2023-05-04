@@ -6,10 +6,10 @@ import {
   Root,
   UnaryOperation,
   Value,
-  Variable,
-  symbols
+  Variable
 } from 'base/ast';
 import { Visitor } from 'base/visitor';
+import { symbols } from './grammar';
 
 export class StringSerializer extends Visitor<string> {
   visitRoot(root: Root): string {

@@ -1,7 +1,7 @@
 import { Root } from 'base/ast';
 import { Parser } from 'base/parser';
-import { grammar } from 'grammar';
 import { Grammar, Parser as NearleyParser } from 'nearley';
+import { grammar } from './grammar';
 
 export class StringParser extends Parser<string> {
   protected _grammar: Grammar;

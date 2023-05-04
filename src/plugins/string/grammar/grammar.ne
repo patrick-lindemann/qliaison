@@ -18,12 +18,12 @@ import {
     isOperation,
     inOperation,
     selector,
-    func,
+    fn,
     identifier,
     array,
     listing,
-    value,
     _null,
+    empty,
     boolean,
     integer,
     float,
@@ -69,22 +69,8 @@ in_operator
     -> "in"i {% operator('in') %}
 
 value
-    -> literal  {% value %}
+    -> literal  {% id %}
     |  variable {% id %}
-
-array
-    -> "[" _ listing _ "]" {% array %}
-
-listing
-    -> null                   {% () => [] %}
-    |  value                  {% value %}
-    |  value _ "," _ listing  {% listing %}
-
-literal
-    -> _null_  {% id %}
-    |  boolean {% id %}
-    |  number  {% id %}
-    |  string  {% id %}
 
 variable
     -> selector {% id %}
@@ -98,7 +84,27 @@ identifier
     -> [a-zA-Z_$] [a-zA-Z0-9_\-$]:* {% identifier %}
 
 function
-    -> identifier _ "(" _ listing _ ")" {% func %}
+    -> identifier _ "(" _ listing _ ")" {% fn %}
+
+array
+    -> "[" _ listing _ "]" {% array %}
+
+listing
+    -> null                   {% () => [] %}
+    |  value                  {% id %}
+    |  value _ "," _ listing  {% listing %}
+
+literal
+    -> _null_  {% id %}
+    |  boolean {% id %}
+    |  number  {% id %}
+    |  string  {% id %}
+
+_null_
+    -> "null"i {% _null %}
+
+_empty_
+    -> "empty"i {% empty %}
 
 boolean
     -> "true"i  {% boolean %}
@@ -111,9 +117,3 @@ number
 string
     -> dqstring {% string %}
     |  sqstring {% string %}
-
-_null_
-    -> "null"i {% _null %}
-
-_empty_
-    -> "empty"i {% id %}

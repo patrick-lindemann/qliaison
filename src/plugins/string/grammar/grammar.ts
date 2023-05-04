@@ -14,12 +14,12 @@ import {
   isOperation,
   inOperation,
   selector,
-  func,
+  fn,
   identifier,
   array,
   listing,
-  value,
   _null,
+  empty,
   boolean,
   integer,
   float,
@@ -347,24 +347,8 @@ const grammar: Grammar = {
       symbols: ['in_operator$subexpression$1'],
       postprocess: operator('in')
     },
-    { name: 'value', symbols: ['literal'], postprocess: value },
+    { name: 'value', symbols: ['literal'], postprocess: id },
     { name: 'value', symbols: ['variable'], postprocess: id },
-    {
-      name: 'array',
-      symbols: [{ literal: '[' }, '_', 'listing', '_', { literal: ']' }],
-      postprocess: array
-    },
-    { name: 'listing', symbols: [], postprocess: () => [] },
-    { name: 'listing', symbols: ['value'], postprocess: value },
-    {
-      name: 'listing',
-      symbols: ['value', '_', { literal: ',' }, '_', 'listing'],
-      postprocess: listing
-    },
-    { name: 'literal', symbols: ['_null_'], postprocess: id },
-    { name: 'literal', symbols: ['boolean'], postprocess: id },
-    { name: 'literal', symbols: ['number'], postprocess: id },
-    { name: 'literal', symbols: ['string'], postprocess: id },
     { name: 'variable', symbols: ['selector'], postprocess: id },
     { name: 'variable', symbols: ['function'], postprocess: id },
     { name: 'selector', symbols: ['identifier'], postprocess: selector },
@@ -395,7 +379,43 @@ const grammar: Grammar = {
         '_',
         { literal: ')' }
       ],
-      postprocess: func
+      postprocess: fn
+    },
+    {
+      name: 'array',
+      symbols: [{ literal: '[' }, '_', 'listing', '_', { literal: ']' }],
+      postprocess: array
+    },
+    { name: 'listing', symbols: [], postprocess: () => [] },
+    { name: 'listing', symbols: ['value'], postprocess: id },
+    {
+      name: 'listing',
+      symbols: ['value', '_', { literal: ',' }, '_', 'listing'],
+      postprocess: listing
+    },
+    { name: 'literal', symbols: ['_null_'], postprocess: id },
+    { name: 'literal', symbols: ['boolean'], postprocess: id },
+    { name: 'literal', symbols: ['number'], postprocess: id },
+    { name: 'literal', symbols: ['string'], postprocess: id },
+    {
+      name: '_null_$subexpression$1',
+      symbols: [/[nN]/, /[uU]/, /[lL]/, /[lL]/],
+      postprocess: function (d) {
+        return d.join('');
+      }
+    },
+    { name: '_null_', symbols: ['_null_$subexpression$1'], postprocess: _null },
+    {
+      name: '_empty_$subexpression$1',
+      symbols: [/[eE]/, /[mM]/, /[pP]/, /[tT]/, /[yY]/],
+      postprocess: function (d) {
+        return d.join('');
+      }
+    },
+    {
+      name: '_empty_',
+      symbols: ['_empty_$subexpression$1'],
+      postprocess: empty
     },
     {
       name: 'boolean$subexpression$1',
@@ -465,23 +485,7 @@ const grammar: Grammar = {
       postprocess: float
     },
     { name: 'string', symbols: ['dqstring'], postprocess: string },
-    { name: 'string', symbols: ['sqstring'], postprocess: string },
-    {
-      name: '_null_$subexpression$1',
-      symbols: [/[nN]/, /[uU]/, /[lL]/, /[lL]/],
-      postprocess: function (d) {
-        return d.join('');
-      }
-    },
-    { name: '_null_', symbols: ['_null_$subexpression$1'], postprocess: _null },
-    {
-      name: '_empty_$subexpression$1',
-      symbols: [/[eE]/, /[mM]/, /[pP]/, /[tT]/, /[yY]/],
-      postprocess: function (d) {
-        return d.join('');
-      }
-    },
-    { name: '_empty_', symbols: ['_empty_$subexpression$1'], postprocess: id }
+    { name: 'string', symbols: ['sqstring'], postprocess: string }
   ],
   ParserStart: 'main'
 };
