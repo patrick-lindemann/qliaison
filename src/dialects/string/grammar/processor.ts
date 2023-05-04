@@ -51,18 +51,6 @@ export const binaryOperation: AstPostProcessor<BinaryOperationNode> = (d) => {
   return builder.binaryOperation($operator, left, right);
 };
 
-export const isOperation: AstPostProcessor<BinaryOperationNode> = (d) => {
-  const [left, $is, $not, right] = [d[0], d[2], d[4], d[5][0]];
-  const operator = ($is + '_' + ($not ? $not : '')) as 'is' | 'not_is';
-  return builder.binaryOperation(operator, left, right);
-};
-
-export const inOperation: AstPostProcessor<BinaryOperationNode> = (d) => {
-  const [left, $not, $in, right] = [d[0], d[2], d[3], d[5]];
-  const operator = (($not ? $not + '_' : '') + $in) as 'in' | 'not_in';
-  return builder.binaryOperation(operator, left, right);
-};
-
 // Variables & Functions
 
 export const selector: AstPostProcessor<VariableNode> = (d) => {
@@ -87,7 +75,7 @@ export const identifier: PostProcessor<string> = (d, _, reject) => {
 // Arrays
 
 export const array: AstPostProcessor<ArrayNode<ValueNode>> = (d) => {
-  const items = d[2] || [];
+  const items = d[2];
   return builder.array(items);
 };
 

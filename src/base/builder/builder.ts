@@ -11,15 +11,16 @@ import {
   Equals,
   Function,
   GreaterThan,
+  GreaterThanEquals,
   In,
   Is,
+  IsNot,
   LessThan,
   LessThanEquals,
   Like,
   Not,
   NotEquals,
   NotIn,
-  NotIs,
   NullValue,
   NumberValue,
   Operator,
@@ -71,7 +72,7 @@ export class LowLevelBuilder {
     return new Variable(identifier);
   }
 
-  array(...items: AstNode[]): Array<AstNode> {
+  array(items: AstNode[]): Array<AstNode> {
     return new Array(items);
   }
 
@@ -143,21 +144,25 @@ export class Builder {
     return new GreaterThan(this.variable(identifier), this.value(value));
   }
 
+  gte(identifier: string, value: Literal): Comparison {
+    return new GreaterThanEquals(this.variable(identifier), this.value(value));
+  }
+
   like(identifier: string, value: Literal): Comparison {
     return new Like(this.variable(identifier), this.value(value));
   }
 
-  is(identifier: string, value: 'null' | 'empty'): Comparison {
+  is(identifier: string, value: null | 'empty'): Comparison {
     return new Is(
       this.variable(identifier),
-      value == 'null' ? new NullValue() : new EmptyValue()
+      value === null ? new NullValue() : new EmptyValue()
     );
   }
 
-  isNot(identifier: string, value: 'null' | 'empty'): Comparison {
-    return new NotIs(
+  isNot(identifier: string, value: null | 'empty'): Comparison {
+    return new IsNot(
       this.variable(identifier),
-      value == 'null' ? new NullValue() : new EmptyValue()
+      value === null ? new NullValue() : new EmptyValue()
     );
   }
 

@@ -15,8 +15,6 @@ import {
     operator,
     unaryOperation,
     binaryOperation,
-    isOperation,
-    inOperation,
     selector,
     fn,
     identifier,
@@ -48,10 +46,10 @@ logical_operator
     |  "or"i  {% operator('or') %}
 
 comparison
-    -> variable _ comparison_operator _ value                              {% binaryOperation %}
-    |  variable __ is_operator __ ( not_operator __ ):? (_null_ | _empty_) {% isOperation %}
-    |  variable __ ( not_operator __ ):? in_operator __ array              {% inOperation %}
-    |  "(" _ condition _ ")"                                               {% nth(2) %}
+    -> variable _ comparison_operator _ literal {% binaryOperation %}
+    |  variable __ is_operator __ empty_literal {% binaryOperation %}
+    |  variable __ in_operator __ array         {% binaryOperation %}
+    |  "(" _ condition _ ")"                    {% nth(2) %}
 
 comparison_operator
     -> "="  {% operator('eq') %}
@@ -63,14 +61,12 @@ comparison_operator
     |  "~"  {% operator('like') %}
 
 is_operator
-    -> "is"i {% operator('is') %}
+    -> "is"i           {% operator('is') %}
+    |  "is"i __ "not"i {% operator('is_not') %}
 
 in_operator
-    -> "in"i {% operator('in') %}
-
-value
-    -> literal  {% id %}
-    |  variable {% id %}
+    -> "in"i           {% operator('in') %}
+    |  "not"i __ "in"i {% operator('not_in') %}
 
 variable
     -> selector {% id %}
@@ -90,15 +86,19 @@ array
     -> "[" _ listing _ "]" {% array %}
 
 listing
-    -> null                   {% () => [] %}
-    |  value                  {% id %}
-    |  value _ "," _ listing  {% listing %}
+    -> null                     {% () => [] %}
+    |  literal                  {% id %}
+    |  literal _ "," _ listing  {% listing %}
 
 literal
     -> _null_  {% id %}
     |  boolean {% id %}
     |  number  {% id %}
     |  string  {% id %}
+
+empty_literal
+    -> _null_  {% id %}
+    |  _empty_ {% id %}
 
 _null_
     -> "null"i {% _null %}

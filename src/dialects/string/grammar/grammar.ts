@@ -11,8 +11,6 @@ import {
   operator,
   unaryOperation,
   binaryOperation,
-  isOperation,
-  inOperation,
   selector,
   fn,
   identifier,
@@ -219,54 +217,18 @@ const grammar: Grammar = {
     },
     {
       name: 'comparison',
-      symbols: ['variable', '_', 'comparison_operator', '_', 'value'],
+      symbols: ['variable', '_', 'comparison_operator', '_', 'literal'],
       postprocess: binaryOperation
     },
     {
-      name: 'comparison$ebnf$1$subexpression$1',
-      symbols: ['not_operator', '__']
+      name: 'comparison',
+      symbols: ['variable', '__', 'is_operator', '__', 'empty_literal'],
+      postprocess: binaryOperation
     },
-    {
-      name: 'comparison$ebnf$1',
-      symbols: ['comparison$ebnf$1$subexpression$1'],
-      postprocess: id
-    },
-    { name: 'comparison$ebnf$1', symbols: [], postprocess: () => null },
-    { name: 'comparison$subexpression$1', symbols: ['_null_'] },
-    { name: 'comparison$subexpression$1', symbols: ['_empty_'] },
     {
       name: 'comparison',
-      symbols: [
-        'variable',
-        '__',
-        'is_operator',
-        '__',
-        'comparison$ebnf$1',
-        'comparison$subexpression$1'
-      ],
-      postprocess: isOperation
-    },
-    {
-      name: 'comparison$ebnf$2$subexpression$1',
-      symbols: ['not_operator', '__']
-    },
-    {
-      name: 'comparison$ebnf$2',
-      symbols: ['comparison$ebnf$2$subexpression$1'],
-      postprocess: id
-    },
-    { name: 'comparison$ebnf$2', symbols: [], postprocess: () => null },
-    {
-      name: 'comparison',
-      symbols: [
-        'variable',
-        '__',
-        'comparison$ebnf$2',
-        'in_operator',
-        '__',
-        'array'
-      ],
-      postprocess: inOperation
+      symbols: ['variable', '__', 'in_operator', '__', 'array'],
+      postprocess: binaryOperation
     },
     {
       name: 'comparison',
@@ -336,6 +298,29 @@ const grammar: Grammar = {
       postprocess: operator('is')
     },
     {
+      name: 'is_operator$subexpression$2',
+      symbols: [/[iI]/, /[sS]/],
+      postprocess: function (d) {
+        return d.join('');
+      }
+    },
+    {
+      name: 'is_operator$subexpression$3',
+      symbols: [/[nN]/, /[oO]/, /[tT]/],
+      postprocess: function (d) {
+        return d.join('');
+      }
+    },
+    {
+      name: 'is_operator',
+      symbols: [
+        'is_operator$subexpression$2',
+        '__',
+        'is_operator$subexpression$3'
+      ],
+      postprocess: operator('is_not')
+    },
+    {
       name: 'in_operator$subexpression$1',
       symbols: [/[iI]/, /[nN]/],
       postprocess: function (d) {
@@ -347,8 +332,29 @@ const grammar: Grammar = {
       symbols: ['in_operator$subexpression$1'],
       postprocess: operator('in')
     },
-    { name: 'value', symbols: ['literal'], postprocess: id },
-    { name: 'value', symbols: ['variable'], postprocess: id },
+    {
+      name: 'in_operator$subexpression$2',
+      symbols: [/[nN]/, /[oO]/, /[tT]/],
+      postprocess: function (d) {
+        return d.join('');
+      }
+    },
+    {
+      name: 'in_operator$subexpression$3',
+      symbols: [/[iI]/, /[nN]/],
+      postprocess: function (d) {
+        return d.join('');
+      }
+    },
+    {
+      name: 'in_operator',
+      symbols: [
+        'in_operator$subexpression$2',
+        '__',
+        'in_operator$subexpression$3'
+      ],
+      postprocess: operator('not_in')
+    },
     { name: 'variable', symbols: ['selector'], postprocess: id },
     { name: 'variable', symbols: ['function'], postprocess: id },
     { name: 'selector', symbols: ['identifier'], postprocess: selector },
@@ -387,16 +393,18 @@ const grammar: Grammar = {
       postprocess: array
     },
     { name: 'listing', symbols: [], postprocess: () => [] },
-    { name: 'listing', symbols: ['value'], postprocess: id },
+    { name: 'listing', symbols: ['literal'], postprocess: id },
     {
       name: 'listing',
-      symbols: ['value', '_', { literal: ',' }, '_', 'listing'],
+      symbols: ['literal', '_', { literal: ',' }, '_', 'listing'],
       postprocess: listing
     },
     { name: 'literal', symbols: ['_null_'], postprocess: id },
     { name: 'literal', symbols: ['boolean'], postprocess: id },
     { name: 'literal', symbols: ['number'], postprocess: id },
     { name: 'literal', symbols: ['string'], postprocess: id },
+    { name: 'empty_literal', symbols: ['_null_'], postprocess: id },
+    { name: 'empty_literal', symbols: ['_empty_'], postprocess: id },
     {
       name: '_null_$subexpression$1',
       symbols: [/[nN]/, /[uU]/, /[lL]/, /[lL]/],
