@@ -13,13 +13,13 @@ import {
   GreaterThan,
   In,
   Is,
-  IsNot,
   LessThan,
   LessThanEquals,
   Like,
   Not,
   NotEquals,
   NotIn,
+  NotIs,
   NullValue,
   NumberValue,
   Operator,
@@ -155,7 +155,7 @@ export class Builder {
   }
 
   isNot(identifier: string, value: 'null' | 'empty'): Comparison {
-    return new IsNot(
+    return new NotIs(
       this.variable(identifier),
       value == 'null' ? new NullValue() : new EmptyValue()
     );
