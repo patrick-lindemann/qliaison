@@ -45,9 +45,9 @@ logical_operator
     |  "or"i  {% operator('or') %}
 
 comparison
-    -> variable _ comparison_operator _ literal {% binaryOperation %}
-    |  variable __ in_operator __ array         {% binaryOperation %}
-    |  "(" _ condition _ ")"                    {% nth(2) %}
+    -> variable _ comparison_operator _ value {% binaryOperation %}
+    |  variable __ in_operator __ array       {% binaryOperation %}
+    |  "(" _ condition _ ")"                  {% nth(2) %}
 
 comparison_operator
     -> "="  {% operator('eq') %}
@@ -61,6 +61,10 @@ comparison_operator
 in_operator
     -> "in"i           {% operator('in') %}
     |  "not"i __ "in"i {% operator('not_in') %}
+
+value
+    -> literal  {% id %}
+    |  function {% id %}
 
 variable
     -> selector {% id %}
@@ -80,9 +84,9 @@ array
     -> "[" _ listing _ "]" {% array %}
 
 listing
-    -> null                     {% () => [] %}
-    |  literal                  {% id %}
-    |  literal _ "," _ listing  {% listing %}
+    -> null                   {% () => [] %}
+    |  value                  {% id %}
+    |  value _ "," _ listing  {% listing %}
 
 literal
     -> _null_  {% id %}

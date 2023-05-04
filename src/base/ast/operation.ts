@@ -1,10 +1,10 @@
 import { Visitor } from 'base/visitor';
 import { Array } from './array';
+import { Function } from './function';
 import { AstNode } from './node';
 import {
   BooleanValue,
   DateValue,
-  EmptyValue,
   NullValue,
   NumberValue,
   StringValue,
@@ -35,11 +35,11 @@ export type Comparable =
   | BooleanValue
   | NumberValue
   | StringValue
-  | DateValue;
-export type Orderable = NumberValue | DateValue;
-export type Likeable = StringValue;
-export type Isable = NullValue | EmptyValue;
-export type Inable = Array<Value>;
+  | DateValue
+  | Function;
+export type Orderable = NumberValue | DateValue | Function;
+export type Likeable = StringValue | Function;
+export type Inable = Array<Value | Function>;
 
 /* Constants */
 

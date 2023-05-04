@@ -216,7 +216,7 @@ const grammar: Grammar = {
     },
     {
       name: 'comparison',
-      symbols: ['variable', '_', 'comparison_operator', '_', 'literal'],
+      symbols: ['variable', '_', 'comparison_operator', '_', 'value'],
       postprocess: binaryOperation
     },
     {
@@ -314,6 +314,8 @@ const grammar: Grammar = {
       ],
       postprocess: operator('not_in')
     },
+    { name: 'value', symbols: ['literal'], postprocess: id },
+    { name: 'value', symbols: ['function'], postprocess: id },
     { name: 'variable', symbols: ['selector'], postprocess: id },
     { name: 'variable', symbols: ['function'], postprocess: id },
     { name: 'selector', symbols: ['identifier'], postprocess: selector },
@@ -352,10 +354,10 @@ const grammar: Grammar = {
       postprocess: array
     },
     { name: 'listing', symbols: [], postprocess: () => [] },
-    { name: 'listing', symbols: ['literal'], postprocess: id },
+    { name: 'listing', symbols: ['value'], postprocess: id },
     {
       name: 'listing',
-      symbols: ['literal', '_', { literal: ',' }, '_', 'listing'],
+      symbols: ['value', '_', { literal: ',' }, '_', 'listing'],
       postprocess: listing
     },
     { name: 'literal', symbols: ['_null_'], postprocess: id },

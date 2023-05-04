@@ -33,14 +33,17 @@ import { keywords } from 'base/keywords';
 
 /* Types */
 
+export type Expression = Condition | Comparison;
 export type Any =
   | Comparison
   | Condition
   | Function
   | Variable
-  | Array<Value>
+  | Array<Function | Value>
   | Value;
+
 export type Literal = null | boolean | number | string | Date;
+export type Parameter = Literal | Variable | Function;
 
 /* Classes */
 
@@ -61,7 +64,7 @@ export class LowLevelBuilder {
     return new BinaryOperation(operator, left, right);
   }
 
-  function(identifier: string, ...parameters: AstNode[]): Function {
+  function(identifier: string, parameters: AstNode[]): Function {
     return new Function(identifier, parameters);
   }
 
@@ -79,92 +82,74 @@ export class LowLevelBuilder {
 }
 
 export class Builder {
-  root(expr: Condition | Comparison): Root {
+  root(expr: Expression): Root {
     return new Root(expr);
   }
 
-  not(expr: Condition | Comparison): Condition {
+  not(expr: Expression): Condition {
     return new Not(expr);
   }
 
-  and(left: Condition | Comparison, right: Condition | Comparison): Condition;
-  and(
-    cond1: Condition | Comparison,
-    cond2: Condition | Comparison,
-    ...conditions: (Condition | Comparison)[]
-  ): Condition;
-  and(
-    cond1: Condition | Comparison,
-    cond2: Condition | Comparison,
-    ...conditions: (Condition | Comparison)[]
-  ): Condition {
-    return conditions.reduce(
+  and(left: Expression, right: Expression): Condition;
+  and(cond1: Expression, cond2: Expression, ...conds: Expression[]): Condition;
+  and(cond1: Expression, cond2: Expression, ...conds: Expression[]): Condition {
+    return conds.reduce(
       (acc, item) => new And(acc, item),
       new And(cond1, cond2)
     ) as Condition;
   }
 
-  or(left: Condition | Comparison, right: Condition | Comparison): Condition;
-  or(
-    cond1: Condition | Comparison,
-    cond2: Condition | Comparison,
-    ...conditions: (Condition | Comparison)[]
-  ): Condition;
-  or(
-    cond1: Condition | Comparison,
-    cond2: Condition | Comparison,
-    ...conditions: (Condition | Comparison)[]
-  ): Condition {
-    return conditions.reduce(
+  or(left: Expression, right: Expression): Condition;
+  or(cond1: Expression, cond2: Expression, ...conds: Expression[]): Condition;
+  or(cond1: Expression, cond2: Expression, ...conds: Expression[]): Condition {
+    return conds.reduce(
       (acc, item) => new Or(acc, item),
       new Or(cond1, cond2)
     ) as Condition;
   }
 
-  eq(identifier: string, value: Literal): Comparison {
+  eq(identifier: string, value: Literal | Function): Comparison {
     return new Equals(this.variable(identifier), this.value(value));
   }
 
-  neq(identifier: string, value: Literal): Comparison {
+  neq(identifier: string, value: Literal | Function): Comparison {
     return new NotEquals(this.variable(identifier), this.value(value));
   }
 
-  lt(identifier: string, value: Literal): Comparison {
+  lt(identifier: string, value: Literal | Function): Comparison {
     return new LessThan(this.variable(identifier), this.value(value));
   }
 
-  lte(identifier: string, value: Literal): Comparison {
+  lte(identifier: string, value: Literal | Function): Comparison {
     return new LessThanEquals(this.variable(identifier), this.value(value));
   }
 
-  gt(identifier: string, value: Literal): Comparison {
+  gt(identifier: string, value: Literal | Function): Comparison {
     return new GreaterThan(this.variable(identifier), this.value(value));
   }
 
-  gte(identifier: string, value: Literal): Comparison {
+  gte(identifier: string, value: Literal | Function): Comparison {
     return new GreaterThanEquals(this.variable(identifier), this.value(value));
   }
 
-  like(identifier: string, value: Literal): Comparison {
-    return new Like(this.variable(identifier), this.value(value));
+  like(identifier: string, value: Literal | Function): Comparison {
+    return new Like(
+      this.variable(identifier),
+      value instanceof Function ? value : this.value(value)
+    );
   }
 
-  in(identifier: string, array: Literal[]): Comparison {
+  in(identifier: string, array: (Literal | Function)[]): Comparison {
     return new In(this.variable(identifier), this.array(array));
   }
 
-  notIn(identifier: string, array: Literal[]): Comparison {
+  notIn(identifier: string, array: (Literal | Function)[]): Comparison {
     return new NotIn(this.variable(identifier), this.array(array));
   }
 
-  function(
-    identifier: string,
-    ...parameters: (Literal | Variable)[]
-  ): Function {
-    const paramNodes = parameters.map((param) =>
-      param instanceof Variable ? param : this.value(param)
-    );
-    return new Function(identifier, paramNodes);
+  function(identifier: string, ...parameters: Parameter[]): Function {
+    const mappedParams = parameters.map((param) => this.parameter(param));
+    return new Function(identifier, mappedParams);
   }
 
   variable(identifier: string): Variable {
@@ -176,12 +161,15 @@ export class Builder {
     return new Variable(identifier);
   }
 
-  protected array(items: Literal[]): Array<Value> {
-    const mappedItems = items.map((item) => this.value(item));
-    return new Array(mappedItems);
+  protected value(value: Literal | Function): Value | Function {
+    return value instanceof Function ? value : this.literal(value);
   }
 
-  protected value(value: Literal): Value {
+  protected parameter(param: Parameter): Value | Variable | Function {
+    return param instanceof AstNode ? param : this.literal(param);
+  }
+
+  protected literal(value: Literal): Value {
     if (value === null) {
       return new NullValue();
     }
@@ -196,5 +184,10 @@ export class Builder {
     if (value instanceof Date) {
       return new DateValue(value);
     }
+  }
+
+  protected array(items: (Literal | Function)[]): Array<Value | Function> {
+    const mappedItems = items.map((item) => this.value(item));
+    return new Array(mappedItems);
   }
 }
