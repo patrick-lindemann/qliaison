@@ -11,7 +11,7 @@ import {
 import { Visitor } from 'base/visitor';
 import { symbols } from './grammar';
 
-export class StringVisitor extends Visitor<string> {
+export class QueryVisitor extends Visitor<string> {
   visitRoot(root: Root): string {
     if (!root.child) {
       return '';

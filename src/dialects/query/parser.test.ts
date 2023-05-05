@@ -1,8 +1,8 @@
 import { describe, expect, test } from '@jest/globals';
 import { Builder } from 'base/builder';
-import { StringParser } from '.';
+import { QueryParser } from './parser';
 
-const parser = new StringParser();
+const parser = new QueryParser();
 const builder = new Builder();
 
 describe('Eol', () => {
