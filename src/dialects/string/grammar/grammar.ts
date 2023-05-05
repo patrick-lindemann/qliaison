@@ -166,16 +166,16 @@ const grammar: Grammar = {
       }
     },
     { name: 'wschar', symbols: [/[ \t\n\v\f]/], postprocess: id },
-    { name: 'main', symbols: ['_', 'condition', '_'], postprocess: root },
+    { name: 'start', symbols: ['_', 'condition', '_'], postprocess: root },
     { name: 'condition', symbols: ['comparison'], postprocess: id },
     {
       name: 'condition',
-      symbols: ['condition', '__', 'logical_operator', '__', 'comparison'],
+      symbols: ['condition', '_', 'logical_operator', '_', 'comparison'],
       postprocess: binaryOperation
     },
     {
       name: 'condition',
-      symbols: ['not_operator', '__', 'condition'],
+      symbols: ['not_operator', '_', 'condition'],
       postprocess: unaryOperation
     },
     {
@@ -221,7 +221,7 @@ const grammar: Grammar = {
     },
     {
       name: 'comparison',
-      symbols: ['variable', '__', 'in_operator', '__', 'array'],
+      symbols: ['variable', '_', 'in_operator', '_', 'array'],
       postprocess: binaryOperation
     },
     {
@@ -314,8 +314,6 @@ const grammar: Grammar = {
       ],
       postprocess: operator('not_in')
     },
-    { name: 'value', symbols: ['literal'], postprocess: id },
-    { name: 'value', symbols: ['function'], postprocess: id },
     { name: 'variable', symbols: ['selector'], postprocess: id },
     { name: 'variable', symbols: ['function'], postprocess: id },
     { name: 'selector', symbols: ['identifier'], postprocess: selector },
@@ -360,6 +358,8 @@ const grammar: Grammar = {
       symbols: ['value', '_', { literal: ',' }, '_', 'listing'],
       postprocess: listing
     },
+    { name: 'value', symbols: ['literal'], postprocess: id },
+    { name: 'value', symbols: ['function'], postprocess: id },
     { name: 'literal', symbols: ['_null_'], postprocess: id },
     { name: 'literal', symbols: ['boolean'], postprocess: id },
     { name: 'literal', symbols: ['number'], postprocess: id },
@@ -442,7 +442,7 @@ const grammar: Grammar = {
     { name: 'string', symbols: ['dqstring'], postprocess: string },
     { name: 'string', symbols: ['sqstring'], postprocess: string }
   ],
-  ParserStart: 'main'
+  ParserStart: 'start'
 };
 
 export default grammar;

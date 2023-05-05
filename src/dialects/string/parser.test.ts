@@ -178,16 +178,16 @@ describe('conditions', () => {
   });
   test('And', () => {
     expect(
-      parser.parse('var > 1 and var = 1') //
+      parser.parse('var > 1 and var < 2') //
     ).toEqual(
-      builder.root(builder.and(builder.gt('var', 1), builder.eq('var', 1))) //
+      builder.root(builder.and(builder.gt('var', 1), builder.lt('var', 2))) //
     );
   });
   test('Or', () => {
     expect(
-      parser.parse('var > 1 or var = 1') //
+      parser.parse('var > 1 or var < 2') //
     ).toEqual(
-      builder.root(builder.or(builder.gt('var', 1), builder.eq('var', 1))) //
+      builder.root(builder.or(builder.gt('var', 1), builder.lt('var', 2))) //
     );
   });
 });

@@ -11,31 +11,31 @@
 
 @{%
 import {
-    root, 
-    operator,
-    unaryOperation,
-    binaryOperation,
-    selector,
-    fn,
-    identifier,
-    array,
-    listing,
-    _null,
-    boolean,
-    integer,
-    float,
-    string,
-    join,
-    nth
+  root, 
+  operator,
+  unaryOperation,
+  binaryOperation,
+  selector,
+  fn,
+  identifier,
+  array,
+  listing,
+  _null,
+  boolean,
+  integer,
+  float,
+  string,
+  join,
+  nth
 } from './processor';
 %}
 
-main -> _ condition _ {% root %}
+start -> _ condition _ {% root %}
 
 condition
-    -> comparison                                  {% id %}
-    |  condition __ logical_operator __ comparison {% binaryOperation %}
-    |  not_operator __ condition                   {% unaryOperation %}
+    -> comparison                                 {% id %}
+    |  condition _ logical_operator _ comparison  {% binaryOperation %}
+    |  not_operator _ condition                   {% unaryOperation %}
 
 not_operator
     -> "not"i {% operator('not') %}
@@ -46,7 +46,7 @@ logical_operator
 
 comparison
     -> variable _ comparison_operator _ value {% binaryOperation %}
-    |  variable __ in_operator __ array       {% binaryOperation %}
+    |  variable _ in_operator _ array         {% binaryOperation %}
     |  "(" _ condition _ ")"                  {% nth(2) %}
 
 comparison_operator
@@ -61,10 +61,6 @@ comparison_operator
 in_operator
     -> "in"i           {% operator('in') %}
     |  "not"i __ "in"i {% operator('not_in') %}
-
-value
-    -> literal  {% id %}
-    |  function {% id %}
 
 variable
     -> selector {% id %}
@@ -87,6 +83,10 @@ listing
     -> null                   {% () => [] %}
     |  value                  {% id %}
     |  value _ "," _ listing  {% listing %}
+
+value
+    -> literal  {% id %}
+    |  function {% id %}
 
 literal
     -> _null_  {% id %}
