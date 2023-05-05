@@ -13,7 +13,11 @@ export class StringParser extends Parser<string> {
 
   parse(input: string): Root {
     const parser = new NearleyParser(this._grammar);
+    // Append the EOL token to the end if it is missing
+    if (!input.endsWith(';')) {
+      input += ';';
+    }
     parser.feed(input);
-    return parser.results[0] as Root;
+    return parser.finish()[0] as Root;
   }
 }

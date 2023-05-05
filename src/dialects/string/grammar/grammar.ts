@@ -166,7 +166,11 @@ const grammar: Grammar = {
       }
     },
     { name: 'wschar', symbols: [/[ \t\n\v\f]/], postprocess: id },
-    { name: 'start', symbols: ['_', 'condition', '_'], postprocess: root },
+    {
+      name: 'start',
+      symbols: ['_', 'condition', '_', { literal: ';' }],
+      postprocess: root
+    },
     { name: 'condition', symbols: ['comparison'], postprocess: id },
     {
       name: 'condition',

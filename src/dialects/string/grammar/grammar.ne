@@ -30,7 +30,7 @@ import {
 } from './processor';
 %}
 
-start -> _ condition _ {% root %}
+start -> _ condition _ ";" {% root %}
 
 condition
     -> comparison                                 {% id %}
