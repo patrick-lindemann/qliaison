@@ -1,5 +1,5 @@
-import { Root } from 'base/ast';
+import { ParseTree } from 'base/types';
 
 export abstract class Serializer<OutputType> {
-  abstract serialize(parseTree: Root): OutputType;
+  abstract serialize(parseTree: ParseTree): OutputType;
 }
