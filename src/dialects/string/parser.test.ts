@@ -5,6 +5,57 @@ import { StringParser } from '.';
 const parser = new StringParser();
 const builder = new Builder();
 
+describe('Eol', () => {
+  test('Empty query', () => {
+    expect(
+      () => parser.parse('') //
+    ).toThrowError();
+  });
+  test('Unfinished query', () => {
+    expect(
+      () => parser.parse('var') //
+    ).toThrowError();
+  });
+});
+
+describe('Whitespaces', () => {
+  test('No Whitespace', () => {
+    expect(
+      parser.parse('var=1') //
+    ).toEqual(
+      builder.root(builder.eq('var', 1)) //
+    );
+  });
+  test('Single Spaces', () => {
+    expect(
+      parser.parse(' var = 1 ') //
+    ).toEqual(
+      builder.root(builder.eq('var', 1)) //
+    );
+  });
+  test('Multiple Spaces', () => {
+    expect(
+      parser.parse('  var  =  1  ') //
+    ).toEqual(
+      builder.root(builder.eq('var', 1)) //
+    );
+  });
+  test('Tabs', () => {
+    expect(
+      parser.parse('\tvar\t=\t1\t') //
+    ).toEqual(
+      builder.root(builder.eq('var', 1)) //
+    );
+  });
+  test('Newlines', () => {
+    expect(
+      parser.parse('\nvar\n=\n1\n') //
+    ).toEqual(
+      builder.root(builder.eq('var', 1)) //
+    );
+  });
+});
+
 describe('values', () => {
   // Null
   test('Null', () => {
@@ -168,7 +219,7 @@ describe('Comparisons', () => {
   });
 });
 
-describe('conditions', () => {
+describe('Conditions', () => {
   test('Not', () => {
     expect(
       parser.parse('not var = 1') //
@@ -176,11 +227,24 @@ describe('conditions', () => {
       builder.root(builder.not(builder.eq('var', 1))) //
     );
   });
-  test('And', () => {
+  test('And (Binary)', () => {
     expect(
       parser.parse('var > 1 and var < 2') //
     ).toEqual(
       builder.root(builder.and(builder.gt('var', 1), builder.lt('var', 2))) //
+    );
+  });
+  test('And (NAry)', () => {
+    expect(
+      parser.parse('var > 1 and var = 2 and var < 3') //
+    ).toEqual(
+      builder.root(
+        builder.and(
+          builder.gt('var', 1), //
+          builder.eq('var', 2), //
+          builder.lt('var', 3)
+        )
+      )
     );
   });
   test('Or', () => {
@@ -190,8 +254,23 @@ describe('conditions', () => {
       builder.root(builder.or(builder.gt('var', 1), builder.lt('var', 2))) //
     );
   });
+  test('Or (NAry)', () => {
+    expect(
+      parser.parse('var > 1 or var = 2 or var < 3') //
+    ).toEqual(
+      builder.root(
+        builder.or(
+          builder.gt('var', 1), //
+          builder.eq('var', 2), //
+          builder.lt('var', 3)
+        )
+      )
+    );
+  });
 });
 
 // describe('functions', () => {});
 
 // describe('parantheses', () => {});
+
+// describe('Complex Queries', () => {});
