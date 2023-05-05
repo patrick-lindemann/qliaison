@@ -16,7 +16,7 @@ import {
   identifier,
   array,
   listing,
-  _null,
+  nul,
   boolean,
   integer,
   float,
@@ -360,18 +360,18 @@ const grammar: Grammar = {
     },
     { name: 'value', symbols: ['literal'], postprocess: id },
     { name: 'value', symbols: ['function'], postprocess: id },
-    { name: 'literal', symbols: ['_null_'], postprocess: id },
+    { name: 'literal', symbols: ['nul'], postprocess: id },
     { name: 'literal', symbols: ['boolean'], postprocess: id },
     { name: 'literal', symbols: ['number'], postprocess: id },
     { name: 'literal', symbols: ['string'], postprocess: id },
     {
-      name: '_null_$subexpression$1',
+      name: 'nul$subexpression$1',
       symbols: [/[nN]/, /[uU]/, /[lL]/, /[lL]/],
       postprocess: function (d) {
         return d.join('');
       }
     },
-    { name: '_null_', symbols: ['_null_$subexpression$1'], postprocess: _null },
+    { name: 'nul', symbols: ['nul$subexpression$1'], postprocess: nul },
     {
       name: 'boolean$subexpression$1',
       symbols: [/[tT]/, /[rR]/, /[uU]/, /[eE]/],

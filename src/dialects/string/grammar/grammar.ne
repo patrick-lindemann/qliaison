@@ -20,7 +20,7 @@ import {
   identifier,
   array,
   listing,
-  _null,
+  nul,
   boolean,
   integer,
   float,
@@ -89,13 +89,13 @@ value
     |  function {% id %}
 
 literal
-    -> _null_  {% id %}
+    -> nul     {% id %}
     |  boolean {% id %}
     |  number  {% id %}
     |  string  {% id %}
 
-_null_
-    -> "null"i {% _null %}
+nul
+    -> "null"i {% nul %}
 
 boolean
     -> "true"i  {% boolean %}
