@@ -16,6 +16,7 @@
     "grammar-build": "nearleyc src/dialects/string/grammar/grammar.ne -o src/dialects/string/grammar/grammar.ts && eslint --fix src/dialects/string/grammar/grammar.ts"
   },
   "dependencies": {
+    "@sequelize/core": "^7.0.0-alpha.23",
     "nearley": "^2.20.1",
     "typescript": "^5.0.4"
   },
