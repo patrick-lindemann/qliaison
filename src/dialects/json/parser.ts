@@ -1,0 +1,69 @@
+import {
+  Array,
+  AstNode,
+  BinaryOperation,
+  Function,
+  Root,
+  UnaryOperation,
+  Value,
+  Variable
+} from 'base/ast';
+import { Parser } from 'base/parser';
+import { ParseTree } from 'base/types';
+import isEmpty from 'lodash.isempty';
+
+/* Types */
+
+type NodeType =
+  | 'unaryOperation'
+  | 'binaryOperation'
+  | 'function'
+  | 'array'
+  | 'variable'
+  | 'value';
+
+type Node<T extends AstNode> = T & {
+  type: NodeType;
+};
+
+/* Classes */
+
+export class AgGridFilterParser extends Parser<object> {
+  parse(input: object): ParseTree {
+    if (isEmpty(input)) {
+      return new Root();
+    }
+    const child = this.node(input as Node<AstNode>);
+    return new Root(child);
+  }
+
+  protected node<T extends AstNode>(obj: Node<T>): AstNode {
+    switch (obj.type) {
+      case 'unaryOperation': {
+        const { operator, right } = obj as unknown as Node<UnaryOperation>;
+        return new UnaryOperation(operator, right);
+      }
+      case 'binaryOperation': {
+        const { left, operator, right } =
+          obj as unknown as Node<BinaryOperation>;
+        return new BinaryOperation(operator, left, right);
+      }
+      case 'function': {
+        const { identifier, parameters } = obj as unknown as Node<Function>;
+        return new Function(identifier, parameters);
+      }
+      case 'variable': {
+        const { identifier } = obj as unknown as Node<Variable>;
+        return new Variable(identifier);
+      }
+      case 'array': {
+        const { items } = obj as unknown as Node<Array<Value>>;
+        return new Array(items);
+      }
+      case 'value': {
+        const { type, value } = obj as unknown as Node<Value>;
+        return new Value(type, value);
+      }
+    }
+  }
+}
