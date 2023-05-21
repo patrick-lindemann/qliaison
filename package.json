@@ -13,7 +13,7 @@
     "test": "jest",
     "format": "prettier --config .prettierrc 'src/**/*.ts' --write",
     "lint": "",
-    "grammar-build": "nearleyc src/dialects/string/grammar/grammar.ne -o src/dialects/string/grammar/grammar.ts && eslint --fix src/dialects/string/grammar/grammar.ts"
+    "grammar-build": "nearleyc src/dialects/query/grammar/grammar.ne -o src/dialects/query/grammar/grammar.ts && eslint --fix src/dialects/query/grammar/grammar.ts"
   },
   "dependencies": {
     "@sequelize/core": "^7.0.0-alpha.23",
