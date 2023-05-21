@@ -1,5 +1,5 @@
-import { Serializer } from 'base/serializer';
-import { ParseTree } from 'base/types';
+import { Serializer } from '@base/serializer';
+import { ParseTree } from '@base/types';
 import { JsonVisitor } from './visitor';
 
 export class JsonSerializer extends Serializer<object> {

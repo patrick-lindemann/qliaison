@@ -1,4 +1,4 @@
-import { Visitor } from 'base/visitor';
+import { Visitor } from '@base/visitor';
 import { Array } from './array';
 import { Function } from './function';
 import { AstNode } from './node';

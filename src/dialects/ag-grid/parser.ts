@@ -1,6 +1,6 @@
-import * as Ast from 'base/ast';
-import { Parser } from 'base/parser';
-import { ParseTree } from 'base/types';
+import * as Ast from '@base/ast';
+import { Parser } from '@base/parser';
+import { ParseTree } from '@base/types';
 import type * as Ag from './types';
 import {
   isCondition,

@@ -7,9 +7,9 @@ import {
   UnaryOperation,
   Value,
   Variable
-} from 'base/ast';
-import { Parser } from 'base/parser';
-import { ParseTree } from 'base/types';
+} from '@base/ast';
+import { Parser } from '@base/parser';
+import { ParseTree } from '@base/types';
 import isEmpty from 'lodash.isempty';
 
 /* Types */

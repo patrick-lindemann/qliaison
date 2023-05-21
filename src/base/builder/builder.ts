@@ -31,8 +31,8 @@ import {
   UnaryOperation,
   Value,
   Variable
-} from 'base/ast';
-import { keywords } from 'base/keywords';
+} from '@base/ast';
+import { keywords } from '@base/keywords';
 
 /* Types */
 

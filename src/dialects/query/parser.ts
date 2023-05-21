@@ -1,5 +1,5 @@
-import { Root } from 'base/ast';
-import { Parser } from 'base/parser';
+import { Root } from '@base/ast';
+import { Parser } from '@base/parser';
 import { Grammar, Parser as NearleyParser } from 'nearley';
 import { grammar } from './grammar';
 

@@ -1,5 +1,5 @@
+import { Builder } from '@base/builder';
 import { describe, expect, test } from '@jest/globals';
-import { Builder } from 'base/builder';
 import { QueryParser } from './parser';
 
 const parser = new QueryParser();

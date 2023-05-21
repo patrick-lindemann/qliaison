@@ -1,5 +1,5 @@
+import { Operator } from '@base/ast';
 import { Op } from '@sequelize/core';
-import { Operator } from 'base/ast';
 
 export const symbols: { [operator in Operator]: symbol } = {
   not: Op.not,

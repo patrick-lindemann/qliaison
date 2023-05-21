@@ -1,5 +1,5 @@
-import { Serializer } from 'base/serializer';
-import { ParseTree } from 'base/types';
+import { Serializer } from '@base/serializer';
+import { ParseTree } from '@base/types';
 import { QueryVisitor } from './visitor';
 
 export class QuerySerializer extends Serializer<string> {

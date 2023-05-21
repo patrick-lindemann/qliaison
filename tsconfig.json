@@ -3,6 +3,11 @@
     "baseUrl": "src",
     "lib": ["ES2016"],
     "moduleResolution": "nodenext",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "paths": {
+      "@/*": ["./*"],
+      "@base/*": ["./base/*"],
+      "@dialects/*": ["./dialects/*"]
+    }
   }
 }

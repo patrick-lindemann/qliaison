@@ -7,8 +7,8 @@ import {
   UnaryOperation,
   Value,
   Variable
-} from 'base/ast';
-import { Visitor } from 'base/visitor';
+} from '@base/ast';
+import { Visitor } from '@base/visitor';
 import { symbols } from './grammar';
 
 export class QueryVisitor extends Visitor<string> {

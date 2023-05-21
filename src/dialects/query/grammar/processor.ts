@@ -8,9 +8,9 @@ import type {
   UnaryOperation as UnaryOperationNode,
   Value as ValueNode,
   Variable as VariableNode
-} from 'base/ast';
-import { LowLevelBuilder } from 'base/builder';
-import { keywords } from 'base/keywords';
+} from '@base/ast';
+import { LowLevelBuilder } from '@base/builder';
+import { keywords } from '@base/keywords';
 
 /* Types */
 

@@ -1,11 +1,4 @@
 import {
-  WhereLeftOperand,
-  WhereOptions,
-  col,
-  fn,
-  where
-} from '@sequelize/core';
-import {
   Array,
   AstNode,
   BinaryOperation,
@@ -14,8 +7,15 @@ import {
   UnaryOperation,
   Value,
   Variable
-} from 'base/ast';
-import { Visitor } from 'base/visitor';
+} from '@base/ast';
+import { Visitor } from '@base/visitor';
+import {
+  WhereLeftOperand,
+  WhereOptions,
+  col,
+  fn,
+  where
+} from '@sequelize/core';
 import { symbols } from './symbols';
 
 export class SequelizeVisitor<T> extends Visitor<WhereOptions<T>> {

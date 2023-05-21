@@ -1,4 +1,4 @@
-import type { Visitor } from 'base/visitor';
+import type { Visitor } from '@base/visitor';
 import { AstNode } from './node';
 
 /* Types */

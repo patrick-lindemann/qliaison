@@ -7,8 +7,8 @@ import {
   UnaryOperation,
   Value,
   Variable
-} from 'base/ast';
-import { Visitor } from 'base/visitor';
+} from '@base/ast';
+import { Visitor } from '@base/visitor';
 
 export class JsonVisitor extends Visitor<object> {
   visitRoot(root: Root): object {

@@ -1,4 +1,4 @@
-import { Comparator, LogicOperator } from 'base/ast/operation';
+import { Comparator, LogicOperator } from '@base/ast/operation';
 
 /* Types */
 
