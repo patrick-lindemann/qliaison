@@ -1,1 +1,1 @@
-export { JsonSerializer } from './serializer';
+export * from './serializer';

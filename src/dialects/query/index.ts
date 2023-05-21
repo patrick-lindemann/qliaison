@@ -1,2 +1,2 @@
-export { QueryParser } from './parser';
-export { QuerySerializer } from './serializer';
+export * from './parser';
+export * from './serializer';

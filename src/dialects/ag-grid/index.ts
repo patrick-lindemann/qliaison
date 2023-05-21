@@ -1,1 +1,1 @@
-export { AgGridFilterParser } from './parser';
+export * from './parser';

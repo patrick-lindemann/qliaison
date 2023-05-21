@@ -1,1 +1,1 @@
-export { SequelizeSerializer } from './serializer';
+export * from './serializer';
