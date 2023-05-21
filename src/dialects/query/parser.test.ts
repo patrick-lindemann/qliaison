@@ -182,6 +182,27 @@ describe('Comparisons', () => {
       builder.root(builder.like('var', '%pattern%')) //
     );
   });
+  test('NotLike', () => {
+    expect(
+      parser.parse('var !~ "%pattern%"') //
+    ).toEqual(
+      builder.root(builder.notLike('var', '%pattern%')) //
+    );
+  });
+  test('ILike', () => {
+    expect(
+      parser.parse('var ~~ "%pattern%"') //
+    ).toEqual(
+      builder.root(builder.iLike('var', '%pattern%')) //
+    );
+  });
+  test('NotILike', () => {
+    expect(
+      parser.parse('var !~~ "%pattern%"') //
+    ).toEqual(
+      builder.root(builder.notILike('var', '%pattern%')) //
+    );
+  });
   test('In (empty array)', () => {
     expect(
       parser.parse('var in []') //

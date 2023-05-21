@@ -284,6 +284,36 @@ const grammar: Grammar = {
       postprocess: operator('like')
     },
     {
+      name: 'comparison_operator$string$4',
+      symbols: [{ literal: '!' }, { literal: '~' }],
+      postprocess: (d) => d.join('')
+    },
+    {
+      name: 'comparison_operator',
+      symbols: ['comparison_operator$string$4'],
+      postprocess: operator('not_like')
+    },
+    {
+      name: 'comparison_operator$string$5',
+      symbols: [{ literal: '~' }, { literal: '~' }],
+      postprocess: (d) => d.join('')
+    },
+    {
+      name: 'comparison_operator',
+      symbols: ['comparison_operator$string$5'],
+      postprocess: operator('i_like')
+    },
+    {
+      name: 'comparison_operator$string$6',
+      symbols: [{ literal: '!' }, { literal: '~' }, { literal: '~' }],
+      postprocess: (d) => d.join('')
+    },
+    {
+      name: 'comparison_operator',
+      symbols: ['comparison_operator$string$6'],
+      postprocess: operator('not_i_like')
+    },
+    {
       name: 'in_operator$subexpression$1',
       symbols: [/[iI]/, /[nN]/],
       postprocess: function (d) {

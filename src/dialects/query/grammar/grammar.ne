@@ -50,13 +50,16 @@ comparison
     |  "(" _ condition _ ")"                  {% nth(2) %}
 
 comparison_operator
-    -> "="  {% operator('eq') %}
-    |  "!=" {% operator('neq') %}
-    |  "<"  {% operator('lt') %}
-    |  "<=" {% operator('lte') %}
-    |  ">"  {% operator('gt') %}
-    |  ">=" {% operator('gte') %}
-    |  "~"  {% operator('like') %}
+    -> "="   {% operator('eq') %}
+    |  "!="  {% operator('neq') %}
+    |  "<"   {% operator('lt') %}
+    |  "<="  {% operator('lte') %}
+    |  ">"   {% operator('gt') %}
+    |  ">="  {% operator('gte') %}
+    |  "~"   {% operator('like') %}
+    |  "!~"  {% operator('not_like') %}
+    |  "~~"  {% operator('i_like') %}
+    |  "!~~" {% operator('not_i_like') %}
 
 in_operator
     -> "in"i           {% operator('in') %}

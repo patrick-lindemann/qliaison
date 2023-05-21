@@ -36,16 +36,12 @@ const classes: Record<
 };
 
 const selectors: Record<
-  Include<
-    Ag.Comparator,
-    'startsWith' | 'endsWith' | 'contains' | 'notContains'
-  >,
+  Include<Ag.Comparator, 'startsWith' | 'endsWith' | 'contains'>,
   (filter: Ag.Comparison) => string
 > = {
   startsWith: (comparison) => comparison.filter + '%',
   endsWith: (comparison) => '%' + comparison.filter,
-  contains: (comparison) => '%' + comparison.filter + '%',
-  notContains: (comparison) => '%' + comparison.filter + '%'
+  contains: (comparison) => '%' + comparison.filter + '%'
 };
 
 /* Classes */
@@ -126,14 +122,13 @@ export class AgGridFilterParser extends Parser<Ag.FilterModel> {
       }
       case 'startsWith':
       case 'endsWith':
-      case 'contains':
-      case 'notContains': {
+      case 'contains': {
         const value = this.value(column, selectors[type](comp), 'text');
-        let result: Ast.Condition | Ast.Comparison = new Ast.Like(field, value);
-        if (type == 'notContains') {
-          result = new Ast.Not(result);
-        }
-        return result;
+        return new Ast.Like(field, value);
+      }
+      case 'notContains': {
+        const value = this.value(column, selectors['contains'], 'text');
+        return new Ast.NotLike(field, value);
       }
       case 'blank':
       case 'notBlank': {
@@ -170,7 +165,7 @@ export class AgGridFilterParser extends Parser<Ag.FilterModel> {
 
   protected array(column: string, array: any[], type: Ag.FilterType) {
     if (type != 'set') {
-      throw new Error(`Invalid cast value to array for column ${column}.`);
+      throw new Error(`Invalid cast from value to set for column ${column}.`);
     }
     const items = Array.from<string>(array).map(
       (item) => new Ast.Value('string', item)

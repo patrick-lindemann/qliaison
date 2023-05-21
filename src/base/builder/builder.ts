@@ -11,13 +11,16 @@ import {
   Function,
   GreaterThan,
   GreaterThanEquals,
+  ILike,
   In,
   LessThan,
   LessThanEquals,
   Like,
   Not,
   NotEquals,
+  NotILike,
   NotIn,
+  NotLike,
   NullValue,
   NumberValue,
   Operator,
@@ -44,6 +47,11 @@ export type Any =
 
 export type Literal = null | boolean | number | string | Date;
 export type Parameter = Literal | Variable | Function;
+
+export type Comparable = null | boolean | number | string | Date | Function;
+export type Orderable = number | Date | Function;
+export type Likeable = string | Function;
+export type Inable = (Literal | Function)[];
 
 /* Classes */
 
@@ -108,42 +116,51 @@ export class Builder {
     ) as Condition;
   }
 
-  eq(identifier: string, value: Literal | Function): Comparison {
+  eq(identifier: string, value: Comparable): Comparison {
     return new Equals(this.variable(identifier), this.value(value));
   }
 
-  neq(identifier: string, value: Literal | Function): Comparison {
+  neq(identifier: string, value: Comparable): Comparison {
     return new NotEquals(this.variable(identifier), this.value(value));
   }
 
-  lt(identifier: string, value: Literal | Function): Comparison {
+  lt(identifier: string, value: Comparable): Comparison {
     return new LessThan(this.variable(identifier), this.value(value));
   }
 
-  lte(identifier: string, value: Literal | Function): Comparison {
+  lte(identifier: string, value: Comparable): Comparison {
     return new LessThanEquals(this.variable(identifier), this.value(value));
   }
 
-  gt(identifier: string, value: Literal | Function): Comparison {
+  gt(identifier: string, value: Comparable): Comparison {
     return new GreaterThan(this.variable(identifier), this.value(value));
   }
 
-  gte(identifier: string, value: Literal | Function): Comparison {
+  gte(identifier: string, value: Comparable): Comparison {
     return new GreaterThanEquals(this.variable(identifier), this.value(value));
   }
 
-  like(identifier: string, value: Literal | Function): Comparison {
-    return new Like(
-      this.variable(identifier),
-      value instanceof Function ? value : this.value(value)
-    );
+  like(identifier: string, value: Likeable): Comparison {
+    return new Like(this.variable(identifier), this.value(value));
   }
 
-  in(identifier: string, array: (Literal | Function)[]): Comparison {
+  notLike(identifier: string, value: Likeable): Comparison {
+    return new NotLike(this.variable(identifier), this.value(value));
+  }
+
+  iLike(identifier: string, value: Likeable): Comparison {
+    return new ILike(this.variable(identifier), this.value(value));
+  }
+
+  notILike(identifier: string, value: Likeable): Comparison {
+    return new NotILike(this.variable(identifier), this.value(value));
+  }
+
+  in(identifier: string, array: Inable): Comparison {
     return new In(this.variable(identifier), this.array(array));
   }
 
-  notIn(identifier: string, array: (Literal | Function)[]): Comparison {
+  notIn(identifier: string, array: Inable): Comparison {
     return new NotIn(this.variable(identifier), this.array(array));
   }
 
