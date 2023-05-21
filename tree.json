@@ -1,9 +1,0 @@
-{
-  "$schema": "./schemas/tree.schema.json",
-  "root": {
-    "child": {
-      "type": "operation",
-      "operator": "eq"
-    }
-  }
-}
