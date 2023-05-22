@@ -9,19 +9,32 @@
     "url": "https://github.com/patrick-lindemann/qliaison"
   },
   "keywords": [
-    "ag-grid",
     "filter",
-    "orm",
-    "prisma",
     "query",
+    "translator",
+    "connector",
     "sequelize",
-    "translate"
+    "prisma",
+    "ag-grid",
+    "json"
   ],
-  "main": "index.js",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "type": "commonjs",
+  "files": [
+    "lib/**/*"
+  ],
   "scripts": {
+    "clean": "rm -rf ./lib",
+    "build": "tsc",
     "test": "jest",
     "format": "prettier --config .prettierrc 'src/**/*.ts' --write",
-    "lint": "",
+    "lint": "eslint src --quiet --fix",
+    "prepack": "npm run build",
+    "prepublishOnly": "npm test && npm run lint",
+    "preversion": "npm run lint",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags",
     "grammar-build": "nearleyc src/dialects/query/grammar/grammar.ne -o src/dialects/query/grammar/grammar.ts && eslint --fix src/dialects/query/grammar/grammar.ts"
   },
   "dependencies": {
