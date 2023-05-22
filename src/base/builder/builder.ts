@@ -201,6 +201,7 @@ export class Builder {
     if (value instanceof Date) {
       return new DateValue(value);
     }
+    throw new Error(`Invalid type ${typeof value} for value ${value}.`);
   }
 
   protected array(items: (Literal | Function)[]): Array<Value | Function> {
