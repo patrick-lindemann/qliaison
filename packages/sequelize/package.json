@@ -21,6 +21,7 @@
     "lib"
   ],
   "main": "./lib/index.js",
+  "types": "./lib/types.d.ts",
   "dependencies": {
     "@qliaison/core": "^0.0.1",
     "@sequelize/core": "^7.0.0-alpha.23"

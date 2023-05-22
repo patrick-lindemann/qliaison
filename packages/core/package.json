@@ -21,6 +21,7 @@
     "lib"
   ],
   "main": "./lib/index.js",
+  "types": "./lib/types.d.ts",
   "devDependencies": {
     "@types/jest": "^29.5.0",
     "ts-jest": "^29.1.0"
