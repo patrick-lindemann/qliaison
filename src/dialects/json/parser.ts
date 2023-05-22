@@ -15,7 +15,7 @@ import { Node } from './types';
 
 /* Classes */
 
-export class AgGridFilterParser extends Parser<object> {
+export class JsonParser extends Parser<object> {
   parse(input: object): ParseTree {
     if (isEmpty(input)) {
       return new Root();
