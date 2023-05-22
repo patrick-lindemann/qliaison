@@ -2,8 +2,15 @@
 node_modules/
 
 # Build files
-lib/
+packages/*/lib
 
 # Test files
 coverage/
 coverage-*
+
+# Log files
+*.log
+npm-debug.log*
+
+# Misc
+.DS_STORE
