@@ -11,20 +11,7 @@ import {
 import { Parser } from '@base/parser';
 import { ParseTree } from '@base/types';
 import isEmpty from 'lodash.isempty';
-
-/* Types */
-
-type NodeType =
-  | 'unaryOperation'
-  | 'binaryOperation'
-  | 'function'
-  | 'array'
-  | 'variable'
-  | 'value';
-
-type Node<T extends AstNode> = T & {
-  type: NodeType;
-};
+import { Node } from './types';
 
 /* Classes */
 
@@ -38,7 +25,7 @@ export class AgGridFilterParser extends Parser<object> {
   }
 
   protected node<T extends AstNode>(obj: Node<T>): AstNode {
-    switch (obj.type) {
+    switch (obj.nodeType) {
       case 'unaryOperation': {
         const { operator, right } = obj as unknown as Node<UnaryOperation>;
         return new UnaryOperation(operator, right);

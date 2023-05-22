@@ -9,6 +9,7 @@ import {
   Variable
 } from '@base/ast';
 import { Visitor } from '@base/visitor';
+import { Node } from './types';
 
 export class JsonVisitor extends Visitor<object> {
   visitRoot(root: Root): object {
@@ -18,27 +19,27 @@ export class JsonVisitor extends Visitor<object> {
     return root.child.accept(this) as object;
   }
 
-  visitUnaryOperation(operation: UnaryOperation): unknown {
-    return { type: 'unaryOperation', ...operation };
+  visitUnaryOperation(operation: UnaryOperation): Node<UnaryOperation> {
+    return { nodeType: 'unaryOperation', ...operation };
   }
 
-  visitBinaryOperation(operation: BinaryOperation): unknown {
-    return { type: 'binaryOperation', ...operation };
+  visitBinaryOperation(operation: BinaryOperation): Node<BinaryOperation> {
+    return { nodeType: 'binaryOperation', ...operation };
   }
 
-  visitFunction(func: Function): unknown {
-    return { type: 'function', ...func };
+  visitFunction(func: Function): Node<Function> {
+    return { nodeType: 'function', ...func };
   }
 
-  visitVariable(variable: Variable): unknown {
-    return { type: 'variable', ...variable };
+  visitVariable(variable: Variable): Node<Variable> {
+    return { nodeType: 'variable', ...variable };
   }
 
-  visitArray<T extends AstNode>(array: Array<T>): unknown {
-    return { type: 'array', ...array };
+  visitArray<T extends AstNode>(array: Array<T>): Node<Array<T>> {
+    return { nodeType: 'array', ...array };
   }
 
-  visitValue(value: Value): unknown {
-    return { type: 'value', ...value };
+  visitValue(value: Value): Node<Value> {
+    return { nodeType: 'value', ...value };
   }
 }
