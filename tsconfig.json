@@ -1,19 +1,11 @@
 {
-  "compilerOptions": {
-    "baseUrl": "src",
-    "lib": ["es2016"],
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "paths": {
-      "@/*": ["./*"],
-      "@base/*": ["./base/*"],
-      "@dialects/*": ["./dialects/*"]
-    },
-    "target": "es6",
-    "module": "commonjs",
-    "declaration": true,
-    "strict": true,
-    "outDir": "./lib"
-  },
-  "exclude": ["node_modules", "coverage", "lib", "**/*.test.ts"]
+  "files": [],
+  "references": [
+    { "path": "packages/core" },
+    { "path": "packages/ag-grid" },
+    { "path": "packages/json" },
+    { "path": "packages/prisma" },
+    { "path": "packages/query" },
+    { "path": "packages/sequelize" }
+  ]
 }

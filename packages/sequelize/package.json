@@ -1,0 +1,35 @@
+{
+  "name": "@qliaison/sequelize",
+  "version": "0.0.1",
+  "description": "The Sequelize filter serializer module for qLiaison",
+  "author": "Patrick Lindemann",
+  "license": "MIT",
+  "keywords": [
+    "filter",
+    "connector",
+    "qliaison",
+    "sequelize"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/patrick-lindemann/qliaison"
+  },
+  "bugs": {
+    "url": "https://github.com/patrick-lindemann/qliaison/issues"
+  },
+  "files": [
+    "lib"
+  ],
+  "main": "./lib/index.js",
+  "dependencies": {
+    "@qliaison/core": "^0.0.1",
+    "@sequelize/core": "^7.0.0-alpha.23"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.0",
+    "ts-jest": "^29.1.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

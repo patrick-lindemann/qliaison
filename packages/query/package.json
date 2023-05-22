@@ -1,0 +1,39 @@
+{
+  "name": "@qliaison/query",
+  "version": "0.0.1",
+  "description": "The query language parser and serializer module for qLiaison",
+  "author": "Patrick Lindemann",
+  "license": "MIT",
+  "keywords": [
+    "filter",
+    "connector",
+    "qliaison",
+    "query"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/patrick-lindemann/qliaison"
+  },
+  "bugs": {
+    "url": "https://github.com/patrick-lindemann/qliaison/issues"
+  },
+  "files": [
+    "lib"
+  ],
+  "main": "./lib/index.js",
+  "scripts": {
+    "compile-grammar": "nearleyc src/grammar/grammar.ne -o src/grammar/grammar.ts"
+  },
+  "dependencies": {
+    "@qliaison/core": "^0.0.1",
+    "nearley": "^2.20.1"
+  },
+  "devDependencies": {
+    "@types/nearley": "^2.11.2",
+    "@types/jest": "^29.5.0",
+    "ts-jest": "^29.1.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
