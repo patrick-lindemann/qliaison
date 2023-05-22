@@ -3,12 +3,7 @@
   "private": true,
   "version": "0.0.1",
   "workspaces": [
-    "./packages/ag-grid/*",
-    "./packages/core/*",
-    "./packages/json/*",
-    "./packages/prisma/*",
-    "./packages/query/*",
-    "./packages/sequelize/*"
+    "./packages/*"
   ],
   "scripts": {
     "clean": "rm -rf ./lib",
