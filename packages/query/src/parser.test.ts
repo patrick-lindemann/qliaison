@@ -1,6 +1,6 @@
-import { QueryParser } from '@/parser';
 import { describe, expect, test } from '@jest/globals';
-import { Builder } from '@qliaison/core/builder';
+import { Builder } from '@qliaison/core';
+import { QueryParser } from './parser';
 
 const parser = new QueryParser();
 const builder = new Builder();

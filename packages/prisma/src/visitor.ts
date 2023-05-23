@@ -6,9 +6,9 @@ import {
   Root,
   UnaryOperation,
   Value,
-  Variable
-} from '@qliaison/core/ast';
-import { Visitor } from '@qliaison/core/visitor';
+  Variable,
+  Visitor
+} from '@qliaison/core';
 
 export class PrismaVisitor<T> extends Visitor<unknown> {
   visitRoot(root: Root): unknown {

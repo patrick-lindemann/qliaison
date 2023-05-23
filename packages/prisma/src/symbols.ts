@@ -1,4 +1,4 @@
-import { Operator } from '@qliaison/core/ast';
+import { Operator } from '@qliaison/core';
 
 // https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#filter-conditions-and-operators
 

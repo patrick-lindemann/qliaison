@@ -1,4 +1,4 @@
-import { Comparator, LogicOperator } from '@qliaison/core/ast';
+import { Comparator, LogicOperator } from '@qliaison/core';
 
 /* Types */
 

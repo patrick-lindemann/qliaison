@@ -1,4 +1,4 @@
-import { AstNode } from '@qliaison/core/ast';
+import { AstNode } from '@qliaison/core';
 
 /**
  * Extract propertiy keys from T that are not a method

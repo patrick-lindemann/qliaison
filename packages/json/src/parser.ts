@@ -4,13 +4,13 @@ import {
   AstNode,
   BinaryOperation,
   Function,
+  ParseTree,
+  Parser,
   Root,
   UnaryOperation,
   Value,
   Variable
-} from '@qliaison/core/ast';
-import { Parser } from '@qliaison/core/parser';
-import { ParseTree } from '@qliaison/core/types';
+} from '@qliaison/core';
 import isEmpty from 'lodash.isempty';
 
 /* Classes */

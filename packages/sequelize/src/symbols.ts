@@ -1,4 +1,4 @@
-import { Operator } from '@qliaison/core/ast';
+import { Operator } from '@qliaison/core';
 import { Op } from '@sequelize/core';
 
 export const symbols: { [operator in Operator]: symbol } = {

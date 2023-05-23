@@ -5,9 +5,8 @@ import {
   isMultiFilter,
   isSetComparison
 } from '@/types';
-import * as Ast from '@qliaison/core/ast';
-import { Parser } from '@qliaison/core/parser';
-import { ParseTree } from '@qliaison/core/types';
+import * as Ast from '@qliaison/core';
+import { ParseTree, Parser } from '@qliaison/core';
 
 /* Types */
 

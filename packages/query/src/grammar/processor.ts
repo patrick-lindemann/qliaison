@@ -8,9 +8,8 @@ import type {
   UnaryOperation as UnaryOperationNode,
   Value as ValueNode,
   Variable as VariableNode
-} from '@qliaison/core/ast';
-import { LowLevelBuilder } from '@qliaison/core/builder';
-import { keywords } from '@qliaison/core/keywords';
+} from '@qliaison/core';
+import { LowLevelBuilder, keywords } from '@qliaison/core';
 
 /* Types */
 

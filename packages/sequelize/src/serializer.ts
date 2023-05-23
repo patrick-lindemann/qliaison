@@ -1,6 +1,5 @@
 import { SequelizeVisitor } from '@/visitor';
-import { Serializer } from '@qliaison/core/serializer';
-import { ParseTree } from '@qliaison/core/types';
+import { ParseTree, Serializer } from '@qliaison/core';
 import { WhereOptions } from '@sequelize/core';
 
 export class SequelizeSerializer<T> extends Serializer<WhereOptions<T>> {

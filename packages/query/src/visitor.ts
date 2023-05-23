@@ -7,9 +7,9 @@ import {
   Root,
   UnaryOperation,
   Value,
-  Variable
-} from '@qliaison/core/ast';
-import { Visitor } from '@qliaison/core/visitor';
+  Variable,
+  Visitor
+} from '@qliaison/core';
 
 export class QueryVisitor extends Visitor<string> {
   visitRoot(root: Root): string {

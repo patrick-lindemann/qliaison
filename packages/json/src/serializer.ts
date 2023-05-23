@@ -1,6 +1,5 @@
 import { JsonVisitor } from '@/visitor';
-import { Serializer } from '@qliaison/core/serializer';
-import { ParseTree } from '@qliaison/core/types';
+import { ParseTree, Serializer } from '@qliaison/core';
 
 export class JsonSerializer extends Serializer<object> {
   serialize(parseTree: ParseTree): object {
