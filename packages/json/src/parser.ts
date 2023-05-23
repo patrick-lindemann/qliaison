@@ -1,4 +1,3 @@
-import { Node } from '@/types';
 import {
   Array,
   AstNode,
@@ -12,6 +11,7 @@ import {
   Variable
 } from '@qliaison/core';
 import isEmpty from 'lodash.isempty';
+import { Node } from './types';
 
 /* Classes */
 

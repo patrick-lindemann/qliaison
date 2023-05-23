@@ -31,8 +31,8 @@ import {
   UnaryOperation,
   Value,
   Variable
-} from '@/ast';
-import { keywords } from '@/keywords';
+} from '../ast';
+import { keywords } from '../keywords';
 import {
   Comparable,
   Expression,

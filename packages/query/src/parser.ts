@@ -1,6 +1,6 @@
-import { grammar } from '@/grammar';
 import { Parser, Root } from '@qliaison/core';
 import { Grammar, Parser as NearleyParser } from 'nearley';
+import { grammar } from './grammar';
 
 export class QueryParser extends Parser<string> {
   protected _grammar: Grammar;

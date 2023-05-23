@@ -1,4 +1,3 @@
-import { Node } from '@/types';
 import {
   Array,
   AstNode,
@@ -10,6 +9,7 @@ import {
   Variable,
   Visitor
 } from '@qliaison/core';
+import { Node } from './types';
 
 export class JsonVisitor extends Visitor<object> {
   visitRoot(root: Root): object {

@@ -1,3 +1,3 @@
-import { Root } from '@/ast';
+import { Root } from './ast';
 
 export type ParseTree = Root;

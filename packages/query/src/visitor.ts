@@ -1,4 +1,3 @@
-import { symbols } from '@/grammar';
 import {
   Array,
   AstNode,
@@ -10,6 +9,7 @@ import {
   Variable,
   Visitor
 } from '@qliaison/core';
+import { symbols } from './grammar';
 
 export class QueryVisitor extends Visitor<string> {
   visitRoot(root: Root): string {

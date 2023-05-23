@@ -1,4 +1,4 @@
-import { Comparison, Condition, Function, Value, Variable } from '@/ast';
+import { Comparison, Condition, Function, Value, Variable } from '../ast';
 
 export type Expression = Condition | Comparison;
 export type Any =

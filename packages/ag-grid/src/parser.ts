@@ -1,12 +1,12 @@
-import type * as Ag from '@/types';
+import * as Ast from '@qliaison/core';
+import { ParseTree, Parser } from '@qliaison/core';
+import type * as Ag from './types';
 import {
   isCondition,
   isDateComparison,
   isMultiFilter,
   isSetComparison
-} from '@/types';
-import * as Ast from '@qliaison/core';
-import { ParseTree, Parser } from '@qliaison/core';
+} from './types';
 
 /* Types */
 

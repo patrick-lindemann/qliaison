@@ -7,7 +7,7 @@ import type {
   UnaryOperation,
   Value,
   Variable
-} from '@/ast';
+} from '../ast';
 
 export abstract class Visitor<OutputType> {
   abstract visitRoot(root: Root): OutputType;

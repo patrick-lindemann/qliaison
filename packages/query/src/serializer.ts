@@ -1,5 +1,5 @@
-import { QueryVisitor } from '@/visitor';
 import { ParseTree, Serializer } from '@qliaison/core';
+import { QueryVisitor } from './visitor';
 
 export class QuerySerializer extends Serializer<string> {
   serialize(parseTree: ParseTree): string {
