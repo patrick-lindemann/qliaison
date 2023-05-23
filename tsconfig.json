@@ -1,11 +1,11 @@
 {
   "files": [],
   "references": [
-    { "path": "packages/core" },
-    { "path": "packages/ag-grid" },
-    { "path": "packages/json" },
-    { "path": "packages/prisma" },
-    { "path": "packages/query" },
-    { "path": "packages/sequelize" }
+    { "path": "./packages/core" },
+    { "path": "./packages/ag-grid" },
+    { "path": "./packages/json" },
+    { "path": "./packages/prisma" },
+    { "path": "./packages/query" },
+    { "path": "./packages/sequelize" }
   ]
 }
