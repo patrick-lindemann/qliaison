@@ -1,6 +1,5 @@
 import { grammar } from '@/grammar';
-import { Root } from '@qliaison/core/ast';
-import { Parser } from '@qliaison/core/parser';
+import { Parser, Root } from '@qliaison/core';
 import { Grammar, Parser as NearleyParser } from 'nearley';
 
 export class QueryParser extends Parser<string> {

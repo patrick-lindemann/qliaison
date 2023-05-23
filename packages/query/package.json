@@ -22,7 +22,7 @@
     "compile-grammar": "nearleyc src/grammar/grammar.ne -o src/grammar/grammar.ts"
   },
   "main": "./lib/index.js",
-  "types": "./lib/types.d.ts",
+  "types": "./lib/index.d.ts",
   "files": [
     "lib"
   ],
