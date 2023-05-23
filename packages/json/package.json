@@ -4,6 +4,7 @@
   "description": "The JSON parser and serializer modules for qLiaison",
   "author": "Patrick Lindemann",
   "license": "MIT",
+  "type": "module",
   "keywords": [
     "filter",
     "connector",
@@ -12,24 +13,27 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/patrick-lindemann/qliaison"
+    "url": "https://github.com/patrick-lindemann/qliaison",
+    "directory": "packages/json"
   },
   "bugs": {
     "url": "https://github.com/patrick-lindemann/qliaison/issues"
   },
+  "main": "./lib/index.js",
+  "types": "./lib/types.d.ts",
   "files": [
     "lib"
   ],
-  "main": "./lib/index.js",
-  "types": "./lib/types.d.ts",
+  "exports": {
+    ".": "./lib/index.js",
+    "./package.json": "./package.json"
+  },
   "dependencies": {
     "@qliaison/core": "^0.0.1",
     "lodash.isempty": "^4.4.0"
   },
   "devDependencies": {
-    "@types/lodash.isempty": "^4.4.0",
-    "@types/jest": "^29.5.0",
-    "ts-jest": "^29.1.0"
+    "@types/lodash.isempty": "^4.4.0"
   },
   "publishConfig": {
     "access": "public"

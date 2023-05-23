@@ -4,6 +4,7 @@
   "description": "Effortlessly translate queries from various sources to flexible where clauses for popular ORM frameworks.",
   "author": "Patrick Lindemann",
   "license": "MIT",
+  "type": "module",
   "keywords": [
     "filter",
     "query",
@@ -12,19 +13,21 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/patrick-lindemann/qliaison"
+    "url": "https://github.com/patrick-lindemann/qliaison",
+    "directory": "packages/core"
   },
   "bugs": {
     "url": "https://github.com/patrick-lindemann/qliaison/issues"
   },
-  "files": [
-    "lib"
-  ],
   "main": "./lib/index.js",
   "types": "./lib/types.d.ts",
-  "devDependencies": {
-    "@types/jest": "^29.5.0",
-    "ts-jest": "^29.1.0"
+  "files": [
+    "lib",
+    "src"
+  ],
+  "exports": {
+    ".": "./lib/index.js",
+    "./package.json": "./package.json"
   },
   "publishConfig": {
     "access": "public"
