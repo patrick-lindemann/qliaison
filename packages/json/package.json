@@ -29,7 +29,7 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@qliaison/core": "^0.0.1",
+    "@qliaison/core": "*",
     "lodash.isempty": "^4.4.0"
   },
   "devDependencies": {

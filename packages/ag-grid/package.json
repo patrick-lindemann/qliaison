@@ -28,7 +28,7 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@qliaison/core": "^0.0.1"
+    "@qliaison/core": "*"
   },
   "publishConfig": {
     "access": "public"
