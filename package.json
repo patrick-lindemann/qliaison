@@ -12,6 +12,7 @@
     "test": "lerna run test --parallel",
     "lint": "lerna run lint --parallel",
     "format": "lerna run format --parallel",
+    "prepublish": "npm run build",
     "publish": "lerna publish --force-publish=* --no-git-tag-version --no-push --yes"
   },
   "devDependencies": {
