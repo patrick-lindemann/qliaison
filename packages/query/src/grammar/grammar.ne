@@ -33,9 +33,9 @@ import {
 start -> _ condition _ ";" {% root %}
 
 condition
-    -> comparison                                 {% id %}
-    |  condition _ logical_operator _ comparison  {% binaryOperation %}
-    |  not_operator _ condition                   {% unaryOperation %}
+    -> comparison                                {% id %}
+    |  condition _ logical_operator _ condition  {% binaryOperation %}
+    |  not_operator _ condition                  {% unaryOperation %}
 
 not_operator
     -> "not"i {% operator('not') %}
