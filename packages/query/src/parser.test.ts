@@ -290,7 +290,134 @@ describe('Conditions', () => {
   });
 });
 
-// describe('functions', () => {});
+describe('Functions', () => {
+  test('Function without arguments', () => {
+    expect(
+      parser.parse('var = myFunc()') //
+    ).toEqual(
+      builder.root(
+        builder.eq(
+          'var', //
+          builder.function('myFunc') //
+        )
+      )
+    );
+  });
+  test('Function with boolean argument', () => {
+    expect(
+      parser.parse('var = myFunc(true)') //
+    ).toEqual(
+      builder.root(
+        builder.eq(
+          'var', //
+          builder.function('myFunc', true) //
+        )
+      )
+    );
+  });
+  test('Function with integer argument', () => {
+    expect(
+      parser.parse('var = myFunc(2)') //
+    ).toEqual(
+      builder.root(
+        builder.eq(
+          'var', //
+          builder.function('myFunc', 2) //
+        )
+      )
+    );
+  });
+  test('Function with float argument', () => {
+    expect(
+      parser.parse('var = myFunc(24.8)') //
+    ).toEqual(
+      builder.root(
+        builder.eq(
+          'var', //
+          builder.function('myFunc', 24.8) //
+        )
+      )
+    );
+  });
+  test('Function with string argument', () => {
+    expect(
+      parser.parse('var = myFunc("myString")') //
+    ).toEqual(
+      builder.root(
+        builder.eq(
+          'var', //
+          builder.function('myFunc', 'myString') //
+        )
+      )
+    );
+  });
+  test('Function with 2 arguments', () => {
+    expect(
+      parser.parse('var = myFunc(false, 2)') //
+    ).toEqual(
+      builder.root(
+        builder.eq(
+          'var', //
+          builder.function('myFunc', false, 2) //
+        )
+      )
+    );
+  });
+  test('Function with 3 arguments', () => {
+    expect(
+      parser.parse('var = myFunc(true, 1, "myString")') //
+    ).toEqual(
+      builder.root(
+        builder.eq(
+          'var', //
+          builder.function('myFunc', true, 1, 'myString') //
+        )
+      )
+    );
+  });
+  test('Nested function without arguments', () => {
+    expect(
+      parser.parse('var = outer(inner())') //
+    ).toEqual(
+      builder.root(
+        builder.eq(
+          'var', //
+          builder.function('outer', builder.function('inner')) //
+        )
+      )
+    );
+  });
+  test('Nested function with 1 argument', () => {
+    expect(
+      parser.parse('var = outer(inner(1))') //
+    ).toEqual(
+      builder.root(
+        builder.eq(
+          'var', //
+          builder.function('outer', builder.function('inner', 1)) //
+        )
+      )
+    );
+  });
+  test('Complex nested function', () => {
+    expect(
+      parser.parse('var = outer(a(), b(bb(false), 66.8), c(3), "myString")') //
+    ).toEqual(
+      builder.root(
+        builder.eq(
+          'var',
+          builder.function(
+            'outer',
+            builder.function('a'),
+            builder.function('b', builder.function('bb', false), 66.8),
+            builder.function('c', 3),
+            'myString'
+          )
+        )
+      )
+    );
+  });
+});
 
 // describe('parantheses', () => {});
 
