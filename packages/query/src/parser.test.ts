@@ -56,8 +56,7 @@ describe('Whitespaces', () => {
   });
 });
 
-describe('values', () => {
-  // Null
+describe('Values', () => {
   test('Null', () => {
     expect(
       parser.parse('var = null') //
@@ -65,7 +64,6 @@ describe('values', () => {
       builder.root(builder.eq('var', null)) //
     );
   });
-  // Boolean
   test('Boolean (false)', () => {
     expect(
       parser.parse('var = false') //
@@ -80,7 +78,6 @@ describe('values', () => {
       builder.root(builder.eq('var', true)) //
     );
   });
-  // Number
   test('Number (integer)', () => {
     expect(
       parser.parse(`var = ${42}`) //
@@ -105,7 +102,6 @@ describe('values', () => {
       () => parser.parse(`var = ${NaN}`) //
     ).toThrowError();
   });
-  // String
   test('String (no quotes)', () => {
     expect(
       () => parser.parse('var = myString') //
@@ -419,6 +415,102 @@ describe('Functions', () => {
   });
 });
 
-// describe('parantheses', () => {});
+describe('Parantheses', () => {
+  test('Empty parantheses', () => {
+    expect(
+      () => parser.parse('()') //
+    ).toThrowError();
+  });
+  test('Single unclosed left paranthesis', () => {
+    expect(
+      () => parser.parse('(var = 1') //
+    ).toThrowError();
+  });
+  test('Nested unclosed left paranthesis', () => {
+    expect(
+      () => parser.parse('((var = 1) and (var = 2)') //
+    ).toThrowError();
+  });
+  test('Single unclosed right paranthesis', () => {
+    expect(
+      () => parser.parse('var = 1)') //
+    ).toThrowError();
+  });
+  test('Nested unclosed right paranthesis', () => {
+    expect(
+      () => parser.parse('(var = 1) and (var = 2))') //
+    ).toThrowError();
+  });
+  test('Idempotent paranthesis', () => {
+    expect(
+      parser.parse('(var = 1)') //
+    ).toEqual(
+      builder.root(
+        builder.eq('var', 1) //
+      )
+    );
+  });
+  test('Nested idempotent parantheses', () => {
+    expect(
+      parser.parse('((var = 1))') //
+    ).toEqual(
+      builder.root(
+        builder.eq('var', 1) //
+      )
+    );
+  });
+  test('Ternary statement: Left paranthesis', () => {
+    expect(
+      parser.parse('(a = 1 and b = 2) or c = 3') //
+    ).toEqual(
+      builder.root(
+        builder.or(
+          builder.and(
+            builder.eq('a', 1), //
+            builder.eq('b', 2)
+          ),
+          builder.eq('c', 3)
+        )
+      )
+    );
+  });
+  test('Ternary statement: Right paranethesis', () => {
+    expect(
+      parser.parse('a = 1 and (b = 2 or c = 3)') //
+    ).toEqual(
+      builder.root(
+        builder.and(
+          builder.eq('a', 1),
+          builder.or(
+            builder.eq('b', 2), //
+            builder.eq('c', 3)
+          )
+        )
+      )
+    );
+  });
+  test('Complex parantheses', () => {
+    expect(
+      parser.parse('not (a = 1 or (b > 2 and (c < 3 or not d = 4)))') //
+    ).toEqual(
+      builder.root(
+        builder.not(
+          builder.or(
+            builder.eq('a', 1),
+            builder.and(
+              builder.gt('b', 2),
+              builder.or(
+                builder.lt('c', 3), //
+                builder.not(
+                  builder.eq('d', 4) //
+                )
+              )
+            )
+          )
+        )
+      )
+    );
+  });
+});
 
 // describe('Complex Queries', () => {});
