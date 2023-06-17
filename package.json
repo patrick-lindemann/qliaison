@@ -8,12 +8,11 @@
     "clean": "lerna clean --yes && lerna run clean --parallel",
     "clean:full": "npm run clean && rimraf node_modules",
     "build": "lerna run build --parallel",
-    "watch": "lerna watch -- lerna run build --scope=\\$LERNA_PACKAGE_NAME",
+    "watch": "lerna watch -- lerna run build:dev --scope=\\$LERNA_PACKAGE_NAME",
     "pretest": "npm run build",
     "test": "lerna run test --parallel",
     "lint": "lerna run lint --parallel",
     "format": "lerna run format --parallel",
-    "prepublish": "npm run build",
     "release": "lerna publish --force-publish=* --yes",
     "publish": "lerna publish --force-publish=* --no-git-tag-version --no-push --yes"
   },
