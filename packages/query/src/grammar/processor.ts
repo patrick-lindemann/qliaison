@@ -80,8 +80,11 @@ export const array: AstPostProcessor<ArrayNode<ValueNode>> = (d) => {
 
 export const listing: PostProcessor<any[]> = (d) => {
   const [value, list] = [d[0], d[4]];
-  // Case with 0 elements or 1 element is caught by the grammar
-  if (!Array.isArray(list)) {
+  // Case with 0 elements is caught by the grammar
+  if (list === undefined) {
+    // Listing contains 1 element
+    return [value];
+  } else if (!Array.isArray(list)) {
     // Listings contains 2 elements
     return [value, list];
   } else {

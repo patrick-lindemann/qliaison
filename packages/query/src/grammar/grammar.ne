@@ -84,7 +84,7 @@ array
 
 listing
     -> null                   {% () => [] %}
-    |  value                  {% id %}
+    |  value                  {% listing %}
     |  value _ "," _ listing  {% listing %}
 
 value
