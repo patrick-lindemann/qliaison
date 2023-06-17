@@ -8,6 +8,7 @@
     "clean": "lerna clean --yes && lerna run clean --parallel",
     "clean:full": "npm run clean && rimraf node_modules",
     "build": "lerna run build --parallel",
+    "pretest": "npm run build",
     "test": "lerna run test --parallel",
     "lint": "lerna run lint --parallel",
     "format": "lerna run format --parallel",
