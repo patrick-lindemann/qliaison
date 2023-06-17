@@ -1,4 +1,3 @@
-import { symbols } from '@/symbols';
 import {
   Array,
   AstNode,
@@ -17,6 +16,7 @@ import {
   fn,
   where
 } from '@sequelize/core';
+import { symbols } from './symbols';
 
 export class SequelizeVisitor<T> extends Visitor<WhereOptions<T>> {
   visitRoot(root: Root): WhereOptions<T> {
