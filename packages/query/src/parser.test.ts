@@ -208,9 +208,9 @@ describe('Comparisons', () => {
   });
   test('In (single element)', () => {
     expect(
-      parser.parse('var in [null, true, 10, 5.5, "myString"]') //
+      parser.parse('var in [1]') //
     ).toEqual(
-      builder.root(builder.in('var', [null, true, 10, 5.5, 'myString'])) //
+      builder.root(builder.in('var', [1])) //
     );
   });
   test('In (multiple elements, same types)', () => {
@@ -491,20 +491,23 @@ describe('Parantheses', () => {
   });
   test('Complex parantheses', () => {
     expect(
-      parser.parse('not (a = 1 or (b > 2 and (c < 3 or not d = 4)))') //
+      parser.parse('not (a = 1 or b > 2) and (c < 3 and (not d = 4 or e > 5))') //
     ).toEqual(
       builder.root(
-        builder.not(
-          builder.or(
-            builder.eq('a', 1),
-            builder.and(
-              builder.gt('b', 2),
-              builder.or(
-                builder.lt('c', 3), //
-                builder.not(
-                  builder.eq('d', 4) //
-                )
-              )
+        builder.and(
+          builder.not(
+            builder.or(
+              builder.eq('a', 1), //
+              builder.gt('b', 2)
+            )
+          ),
+          builder.and(
+            builder.lt('c', 3),
+            builder.or(
+              builder.not(
+                builder.eq('d', 4) //
+              ),
+              builder.gt('e', 5)
             )
           )
         )
