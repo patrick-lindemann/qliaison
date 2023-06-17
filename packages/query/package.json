@@ -21,7 +21,7 @@
   "scripts": {
     "clean": "rimraf node_modules lib *.tsbuildinfo",
     "build": "tsc --build",
-    "test": "jest --config ../../jest.config.js --passWithNoTests",
+    "test": "jest --passWithNoTests",
     "lint": "eslint ./src/**/*.ts --config ../../.eslintrc --fix",
     "format": "prettier './src/**/*.ts' --config ../../.prettierrc --write",
     "compile-grammar": "nearleyc src/grammar/grammar.ne -o src/grammar/grammar.ts"
