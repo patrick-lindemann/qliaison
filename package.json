@@ -13,8 +13,9 @@
     "test": "lerna run test --parallel",
     "lint": "lerna run lint --parallel",
     "format": "lerna run format --parallel",
-    "release": "lerna publish --force-publish=* --yes",
-    "publish": "lerna publish --force-publish=* --no-git-tag-version --no-push --yes"
+    "prepublish": "npm run clean && npm run build",
+    "publish": "lerna publish --force-publish=* --no-git-tag-version --no-push --yes",
+    "release": "lerna publish --force-publish=* --yes"
   },
   "devDependencies": {
     "lerna": "^6.6.2",
