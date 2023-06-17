@@ -1,8 +1,10 @@
 import { describe, expect, test } from '@jest/globals';
 import { Builder } from '@qliaison/core';
 import { QueryParser } from './parser';
+import { QuerySerializer } from './serializer';
 
 const parser = new QueryParser();
+const serializer = new QuerySerializer();
 const builder = new Builder();
 
 describe('Eol', () => {
@@ -284,6 +286,51 @@ describe('Conditions', () => {
       )
     );
   });
+  test('Or not', () => {
+    expect(
+      parser.parse('var > 1 or not var < 2') //
+    ).toEqual(
+      builder.root(
+        builder.or(
+          builder.gt('var', 1), //
+          builder.not(
+            builder.lt('var', 2) //
+          )
+        )
+      )
+    );
+  });
+  test('And not', () => {
+    expect(
+      parser.parse('var > 1 and not var < 2') //
+    ).toEqual(
+      builder.root(
+        builder.and(
+          builder.gt('var', 1), //
+          builder.not(
+            builder.lt('var', 2) //
+          )
+        )
+      )
+    );
+  });
+  test('Complex condition', () => {
+    expect(
+      parser.parse('var > 1 or var < 2 and not var = 3') //
+    ).toEqual(
+      builder.root(
+        builder.and(
+          builder.or(
+            builder.gt('var', 1), //
+            builder.lt('var', 2)
+          ),
+          builder.not(
+            builder.eq('var', 3) //
+          )
+        )
+      )
+    );
+  });
 });
 
 describe('Functions', () => {
@@ -459,6 +506,21 @@ describe('Parantheses', () => {
       )
     );
   });
+  test('Ternary statement: No parantheses', () => {
+    expect(
+      parser.parse('a = 1 and b = 2 or c = 3') //
+    ).toEqual(
+      builder.root(
+        builder.or(
+          builder.and(
+            builder.eq('a', 1), //
+            builder.eq('b', 2)
+          ),
+          builder.eq('c', 3)
+        )
+      )
+    );
+  });
   test('Ternary statement: Left paranthesis', () => {
     expect(
       parser.parse('(a = 1 and b = 2) or c = 3') //
@@ -516,4 +578,22 @@ describe('Parantheses', () => {
   });
 });
 
-// describe('Complex Queries', () => {});
+describe('Complex Queries', () => {
+  test('Complex query 1', () => {
+    expect(
+      parser.parse(
+        'active = true and createdAt < currentDate() and not (username ~~ "%robot_")'
+      )
+    ).toEqual(
+      builder.root(
+        builder.and(
+          builder.eq('active', true),
+          builder.lt('createdAt', builder.function('currentDate')),
+          builder.not(
+            builder.iLike('username', '%robot_') //
+          )
+        )
+      )
+    );
+  });
+});

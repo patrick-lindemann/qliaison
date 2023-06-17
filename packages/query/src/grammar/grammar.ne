@@ -33,16 +33,20 @@ import {
 start -> _ condition _ ";" {% root %}
 
 condition
-    -> comparison                                {% id %}
-    |  condition _ logical_operator _ condition  {% binaryOperation %}
-    |  not_operator _ condition                  {% unaryOperation %}
-
-not_operator
-    -> "not"i {% operator('not') %}
+    -> comparison                                     {% id %}
+    |  condition _ logical_operator _ not_operation   {% binaryOperation %}
+    |  condition _ logical_operator _ comparison      {% binaryOperation %}
 
 logical_operator
     -> "and"i {% operator('and') %}
     |  "or"i  {% operator('or') %}
+
+not_operation
+    -> not_operator _ comparison {% unaryOperation %}
+    |  not_operator _ condition  {% unaryOperation %}
+
+not_operator
+    -> "not"i {% operator('not') %}
 
 comparison
     -> variable _ comparison_operator _ value {% binaryOperation %}
