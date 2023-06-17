@@ -21,7 +21,7 @@
   "scripts": {
     "clean": "rimraf node_modules lib *.tsbuildinfo",
     "build": "tsc --build",
-    "test": "jest --passWithNoTests",
+    "test": "jest --config ../../jest.config.js --rootDir . --passWithNoTests",
     "lint": "eslint ./src/**/*.ts --config ../../.eslintrc --fix",
     "format": "prettier './src/**/*.ts' --config ../../.prettierrc --write"
   },
