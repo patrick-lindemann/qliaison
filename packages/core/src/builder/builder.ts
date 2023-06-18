@@ -181,6 +181,9 @@ export class Builder {
       case 'boolean':
         return new BooleanValue(value);
       case 'number':
+        if (Number.isNaN(value) || !Number.isFinite(value)) {
+          throw new Error(`Invalid number value ${value}.`);
+        }
         return new NumberValue(value);
       case 'string':
         return new StringValue(value);
