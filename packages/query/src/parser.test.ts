@@ -1,10 +1,8 @@
 import { describe, expect, test } from '@jest/globals';
 import { Builder } from '@qliaison/core';
 import { QueryParser } from './parser';
-import { QuerySerializer } from './serializer';
 
 const parser = new QueryParser();
-const serializer = new QuerySerializer();
 const builder = new Builder();
 
 describe('Eol', () => {
@@ -82,14 +80,14 @@ describe('Values', () => {
   });
   test('Number (integer)', () => {
     expect(
-      parser.parse(`var = ${42}`) //
+      parser.parse(`var = 42`) //
     ).toEqual(
       builder.root(builder.eq('var', 42)) //
     );
   });
   test('Number (float)', () => {
     expect(
-      parser.parse(`var = ${42.678}`) //
+      parser.parse(`var = 42.678`) //
     ).toEqual(
       builder.root(builder.eq('var', 42.678)) //
     );
@@ -126,6 +124,25 @@ describe('Values', () => {
   test('String (backtick quotes)', () => {
     expect(
       () => parser.parse('var = `myString`') //
+    ).toThrowError();
+  });
+  test('String (escaped single quotes)', () => {
+    expect(
+      parser.parse("var = 'my\\'String'") //
+    ).toEqual(
+      builder.root(builder.eq('var', "my'String")) //
+    );
+  });
+  test('String (escaped double quotes)', () => {
+    expect(
+      parser.parse('var = "my\\"String"') //
+    ).toEqual(
+      builder.root(builder.eq('var', 'my"String')) //
+    );
+  });
+  test('String (escaped backtick quotes)', () => {
+    expect(
+      () => parser.parse('var = `my\\`String`') //
     ).toThrowError();
   });
 });
