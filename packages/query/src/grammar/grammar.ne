@@ -34,6 +34,7 @@ start -> _ condition _ ";" {% root %}
 
 condition
     -> comparison                                     {% id %}
+    |  not_operation                                  {% id %}  
     |  condition _ logical_operator _ not_operation   {% binaryOperation %}
     |  condition _ logical_operator _ comparison      {% binaryOperation %}
 

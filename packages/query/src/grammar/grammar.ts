@@ -87,6 +87,7 @@ const grammar: Grammar = {
     {"name": "wschar", "symbols": [/[ \t\n\v\f]/], "postprocess": id},
     {"name": "start", "symbols": ["_", "condition", "_", {"literal":";"}], "postprocess": root},
     {"name": "condition", "symbols": ["comparison"], "postprocess": id},
+    {"name": "condition", "symbols": ["not_operation"], "postprocess": id},
     {"name": "condition", "symbols": ["condition", "_", "logical_operator", "_", "not_operation"], "postprocess": binaryOperation},
     {"name": "condition", "symbols": ["condition", "_", "logical_operator", "_", "comparison"], "postprocess": binaryOperation},
     {"name": "logical_operator$subexpression$1", "symbols": [/[aA]/, /[nN]/, /[dD]/], "postprocess": function(d) {return d.join(""); }},
