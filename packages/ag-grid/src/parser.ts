@@ -1,225 +1,284 @@
 import * as Ast from '@qliaison/core';
 import { ParseTree, Parser } from '@qliaison/core';
-import type * as Ag from './types';
 import {
-  isCondition,
-  isDateComparison,
-  isMultiFilter,
-  isSetComparison
-} from './types';
+  DateFilterModel,
+  ICombinedSimpleModel,
+  IMultiFilterModel,
+  ISimpleFilterModel,
+  NumberFilterModel,
+  SetFilterModel,
+  TextFilterModel
+} from 'ag-grid-community';
+import { isCombinedSimpleModel, isMultiFilterModel, parseDate } from './utils';
 
 /* Types */
 
-type Include<T, U extends T> = U;
+export type FilterModel =
+  | TextFilterModel
+  | NumberFilterModel
+  | DateFilterModel
+  | SetFilterModel;
 
-/* Constants */
-
-const classes: Record<
-  Include<
-    Ag.Comparator,
-    | 'equals'
-    | 'notEqual'
-    | 'lessThan'
-    | 'lessThanOrEqual'
-    | 'greaterThan'
-    | 'greaterThanOrEqual'
-  >,
-  new (field: Ast.Variable, value: Ast.Value) => Ast.Comparison
-> = {
-  equals: Ast.Equals,
-  notEqual: Ast.NotEquals,
-  lessThan: Ast.LessThan,
-  lessThanOrEqual: Ast.LessThanEquals,
-  greaterThan: Ast.GreaterThan,
-  greaterThanOrEqual: Ast.GreaterThanEquals
-};
-
-const selectors: Record<
-  Include<Ag.Comparator, 'startsWith' | 'endsWith' | 'contains'>,
-  (filter: Ag.Comparison) => string
-> = {
-  startsWith: (comparison) => comparison.filter + '%',
-  endsWith: (comparison) => '%' + comparison.filter,
-  contains: (comparison) => '%' + comparison.filter + '%'
+export type ColumnFilterModels = {
+  [column: string]:
+    | FilterModel
+    | ICombinedSimpleModel<FilterModel>
+    | IMultiFilterModel;
 };
 
 /* Classes */
 
-export class AgGridFilterParser extends Parser<Ag.FilterModel> {
-  parse(input: Ag.FilterModel): ParseTree {
+export class AgGridFilterParser extends Parser<ColumnFilterModels> {
+  parse(input: ColumnFilterModels): ParseTree {
     return this.root(input);
   }
 
-  protected root(model: Ag.FilterModel): Ast.Root {
-    const entries = Object.entries(model);
+  protected root(filters: ColumnFilterModels): Ast.Root {
+    const entries = Object.entries(filters);
     switch (entries.length) {
       case 0:
-        return new Ast.Root();
+        throw new SyntaxError('Empty filter model specified.');
       case 1: {
         const [column, filter] = entries[0];
-        const node = this.filter(column, filter);
+        const node = this.filterModel(column, filter);
         return new Ast.Root(node);
       }
     }
-    const nodes = entries.map(([column, filter]) =>
-      this.filter(column, filter)
-    );
-    return new Ast.Root(and(...nodes));
+    const nodes = entries
+      .map(([column, filter]) => this.filterModel(column, filter))
+      .reduce((acc, node) => (acc ? new Ast.And(acc, node) : node));
+    return new Ast.Root(nodes);
   }
 
-  protected filter(
+  protected filterModel(
     column: string,
-    filter: Ag.Filter
+    model:
+      | ISimpleFilterModel
+      | ICombinedSimpleModel<ISimpleFilterModel>
+      | IMultiFilterModel
   ): Ast.Condition | Ast.Comparison {
-    if (isMultiFilter(filter)) {
-      const models = filter.filterModels.filter((v) => v !== null);
-      if (models.length == 0) {
-        throw new SyntaxError(
-          `Empty Filter specified in MultiFilter for column '${column}'.`
-        );
-      }
-      return and(...models);
-    } else if (isCondition(filter)) {
-      return this.condition(column, filter);
+    if (isMultiFilterModel(model)) {
+      return this.multiFilterModel(column, model);
+    } else if (isCombinedSimpleModel(model)) {
+      return this.combinedSimpleModel(column, model);
     } else {
-      return this.comparison(column, filter);
+      return this.simpleFilterModel(column, model);
     }
   }
 
-  protected condition(column: string, cond: Ag.Condition): Ast.Condition {
-    const left = this.comparison(column, cond.condition1);
-    const right = this.comparison(column, cond.condition2);
-    if (cond.operator == 'AND') {
-      return new Ast.And(left, right);
-    }
-    return new Ast.Or(left, right);
-  }
-
-  protected comparison(
+  protected multiFilterModel(
     column: string,
-    comp: Ag.Comparison
+    model: IMultiFilterModel
   ): Ast.Condition | Ast.Comparison {
-    const field = new Ast.Variable(column);
-    const { type, filterType, filter, filterTo } = toComparison(comp);
-    switch (type) {
+    if (!model.filterModels || model.filterModels.length === 0) {
+      throw new SyntaxError('Empty Filter specified in MultiFilter.');
+    }
+    const result = model.filterModels
+      .map((m) => this.filterModel(column, model))
+      .reduce((acc, node) => (acc ? new Ast.And(acc, node) : node));
+    return result;
+  }
+
+  protected combinedSimpleModel(
+    column: string,
+    model: ICombinedSimpleModel<ISimpleFilterModel>
+  ): Ast.Condition | Ast.Comparison {
+    // Ensure Backwards compability with deprecated properties 'condition1' and 'condition2'
+    const conditions = model.conditions || [model.condition1, model.condition2];
+    const Operator = model.operator === 'OR' ? Ast.Or : Ast.And;
+    if (conditions.length === 0) {
+      throw new SyntaxError(
+        `Empty condition specified for column '${column}'.`
+      );
+    } else if (conditions.length === 1) {
+      return this.simpleFilterModel(column, conditions[0]);
+    }
+    const result = conditions
+      .map((model) => this.simpleFilterModel(column, model))
+      .reduce((acc, node) => (acc ? new Operator(acc, node) : node));
+    return result;
+  }
+
+  protected simpleFilterModel(
+    column: string,
+    model: ISimpleFilterModel
+  ): Ast.Condition | Ast.Comparison {
+    switch (model.filterType) {
+      case 'text':
+        return this.textFilterModel(column, model as TextFilterModel);
+      case 'number':
+        return this.numberFilterModel(column, model as NumberFilterModel);
+      case 'date':
+        return this.dateFilterModel(column, model as DateFilterModel);
+      case 'set':
+        return this.setFilterModel(column, model as SetFilterModel);
+      default:
+        throw new SyntaxError(`Unsupported filter type "${model.filterType}".`);
+    }
+  }
+
+  protected textFilterModel(
+    column: string,
+    model: TextFilterModel
+  ): Ast.Condition | Ast.Comparison {
+    if (!model.filter) {
+      throw new SyntaxError(
+        `Empty filter specified for column '${column}'. Use 'blank' or 'notBlank' instead.`
+      );
+    }
+    const columnNode = new Ast.Variable(column);
+    switch (model.type) {
       case 'equals':
+        return new Ast.Equals(columnNode, new Ast.StringValue(model.filter));
       case 'notEqual':
-      case 'lessThan':
-      case 'lessThanOrEqual':
-      case 'greaterThan':
-      case 'greaterThanOrEqual': {
-        const value = this.value(column, filter, filterType);
-        return new classes[type](field, value);
-      }
-      case 'inRange': {
-        const lower = this.value(column, filter, filterType);
-        const upper = this.value(column, filterTo, filterType);
-        return new Ast.And(
-          new Ast.GreaterThanEquals(field, lower),
-          new Ast.LessThanEquals(field, upper)
-        );
-      }
+        return new Ast.NotEquals(columnNode, new Ast.StringValue(model.filter));
       case 'startsWith':
+        return new Ast.Like(
+          columnNode,
+          new Ast.StringValue(model.filter + '%')
+        );
       case 'endsWith':
-      case 'contains': {
-        const value = this.value(column, selectors[type](comp), 'text');
-        return new Ast.Like(field, value);
-      }
-      case 'notContains': {
-        const value = this.value(column, selectors['contains'], 'text');
-        return new Ast.NotLike(field, value);
+        return new Ast.Like(
+          columnNode,
+          new Ast.StringValue('%' + model.filter)
+        );
+      case 'contains':
+        return new Ast.Like(
+          columnNode,
+          new Ast.StringValue('%' + model.filter + '%')
+        );
+      case 'notContains':
+        return new Ast.NotLike(
+          columnNode,
+          new Ast.StringValue('%' + model.filter + '%')
+        );
+      case 'blank':
+        return new Ast.Or(
+          new Ast.Equals(columnNode, new Ast.NullValue()),
+          new Ast.Equals(columnNode, new Ast.StringValue(''))
+        );
+      case 'notBlank':
+        return new Ast.And(
+          new Ast.NotEquals(columnNode, new Ast.NullValue()),
+          new Ast.NotEquals(columnNode, new Ast.StringValue(''))
+        );
+      default:
+        // https://www.ag-grid.com/angular-data-grid/filter-text/#text-filter-options
+        throw new SyntaxError(
+          `Unsupported filter type "${model.type}" for text comparison.`
+        );
+    }
+  }
+
+  protected numberFilterModel(
+    column: string,
+    model: NumberFilterModel
+  ): Ast.Condition | Ast.Comparison {
+    if (!model.filter) {
+      throw new SyntaxError(
+        `Empty filter specified for column '${column}'. Use 'blank' or 'notBlank' instead.`
+      );
+    }
+    const columnNode = new Ast.Variable(column);
+    const valueNode = new Ast.NumberValue(model.filter);
+    switch (model.type) {
+      case 'equals':
+        return new Ast.Equals(columnNode, valueNode);
+      case 'notEqual':
+        return new Ast.NotEquals(columnNode, valueNode);
+      case 'lessThan':
+        return new Ast.LessThan(columnNode, valueNode);
+      case 'lessThanOrEqual':
+        return new Ast.LessThanEquals(columnNode, valueNode);
+      case 'greaterThan':
+        return new Ast.GreaterThan(columnNode, valueNode);
+      case 'greaterThanOrEqual':
+        return new Ast.GreaterThanEquals(columnNode, valueNode);
+      case 'inRange': {
+        if (!model.filterTo) {
+          throw new SyntaxError(
+            `Empty filterTo specified for column '${column}' and filter type 'inRange'`
+          );
+        }
+        const valueToNode = new Ast.NumberValue(model.filterTo);
+        return new Ast.And(
+          new Ast.GreaterThanEquals(columnNode, valueNode),
+          new Ast.LessThanEquals(columnNode, valueToNode)
+        );
       }
       case 'blank':
-      case 'notBlank': {
-        let result: Ast.Condition | Ast.Comparison = isNull(field);
-        if (comp.filterType == 'text') {
-          result = new Ast.Or(result, isEmpty(field));
+        return new Ast.Equals(columnNode, new Ast.NullValue());
+      case 'notBlank':
+        return new Ast.NotEquals(columnNode, new Ast.NullValue());
+      default:
+        // https://www.ag-grid.com/angular-data-grid/filter-number/#number-filter-options
+        throw new SyntaxError(
+          `Unsupported filter type "${model.type}" for text comparison.`
+        );
+    }
+  }
+
+  protected dateFilterModel(
+    column: string,
+    model: DateFilterModel
+  ): Ast.Condition | Ast.Comparison {
+    if (!model.dateFrom) {
+      throw new SyntaxError(
+        `Empty filter specified for column '${column}'. Use 'blank' or 'notBlank' instead.`
+      );
+    }
+    const columnNode = new Ast.Variable(column);
+    const valueNode = new Ast.DateValue(parseDate(model.dateFrom));
+    switch (model.type) {
+      case 'equals':
+        return new Ast.Equals(columnNode, valueNode);
+      case 'notEqual':
+        return new Ast.NotEquals(columnNode, valueNode);
+      case 'lessThan':
+        return new Ast.LessThan(columnNode, valueNode);
+      case 'greaterThan':
+        return new Ast.GreaterThan(columnNode, valueNode);
+      case 'inRange': {
+        if (!model.dateTo) {
+          throw new SyntaxError(
+            `Empty filterTo specified for column '${column}' and filter type 'inRange'`
+          );
         }
-        if (type == 'notBlank') {
-          result = new Ast.Not(result);
-        }
-        return result;
-      }
-      case 'in': {
-        const set = new Set(comp.filter as Ag.Set);
-        if (set.size == 0) {
-          return new Ast.In(field, new Ast.Array([]));
-        }
-        if (!set.has(null)) {
-          const array = this.array(column, Array.from(set), filterType);
-          return new Ast.In(field, array);
-        }
-        // Filter null values
-        set.delete(null);
-        if (set.size == 0) {
-          return isNull(field);
-        }
-        return new Ast.Or(
-          isNull(field),
-          new Ast.In(field, this.array(column, Array.from(set), filterType))
+        const valueToNode = new Ast.DateValue(parseDate(model.dateTo));
+        return new Ast.And(
+          new Ast.GreaterThanEquals(columnNode, valueNode),
+          new Ast.LessThanEquals(columnNode, valueToNode)
         );
       }
+      case 'blank':
+        return new Ast.Equals(columnNode, new Ast.NullValue());
+      case 'notBlank':
+        return new Ast.NotEquals(columnNode, new Ast.NullValue());
+      default:
+        // https://www.ag-grid.com/angular-data-grid/filter-date/#date-filter-options
+        throw new SyntaxError(
+          `Unsupported filter type "${model.type}" for text comparison.`
+        );
     }
   }
 
-  protected array(column: string, array: any[], type: Ag.FilterType) {
-    if (type != 'set') {
-      throw new Error(`Invalid cast from value to set for column ${column}.`);
+  protected setFilterModel(
+    column: string,
+    model: SetFilterModel
+  ): Ast.Condition | Ast.Comparison {
+    if (model.values.length === 0) {
+      throw new SyntaxError(
+        `Empty filter specified for column '${column}'. Use 'blank' or 'notBlank' instead.`
+      );
     }
-    const items = Array.from<string>(array).map(
-      (item) => new Ast.Value('string', item)
+    const columnNode = new Ast.Variable(column);
+    const valueNode = new Ast.Array(
+      model.values.map((value) =>
+        typeof value === 'string'
+          ? new Ast.StringValue(value)
+          : new Ast.NullValue()
+      )
     );
-    return new Ast.Array(items);
+    return new Ast.In(columnNode, valueNode);
   }
-
-  protected value(column: string, value: any, type: Ag.FilterType): Ast.Value {
-    switch (type) {
-      case 'text':
-        return new Ast.Value('string', value);
-      case 'number':
-        return new Ast.Value('number', value);
-      case 'date':
-        return new Ast.Value('date', value);
-      case 'set':
-        throw new Error(`Invalid cast from set to value for column ${column}.`);
-    }
-  }
-}
-
-/* Helper Functions */
-
-function and(...nodes: any[]): Ast.Condition | Ast.Comparison | Ast.And {
-  let result = nodes.pop();
-  while (nodes.length > 0) {
-    result = new Ast.And(result, nodes.pop());
-  }
-  return result;
-}
-
-function isNull(field: Ast.Variable): Ast.Comparison {
-  return new Ast.Equals(field, new Ast.NullValue());
-}
-
-function isEmpty(field: Ast.Variable): Ast.Comparison {
-  return new Ast.Equals(field, new Ast.StringValue(''));
-}
-
-export function toComparison(
-  comparison: Ag.Comparison | Ag.DateComparison | Ag.SetComparison
-): Ag.Comparison {
-  if (isDateComparison(comparison)) {
-    return {
-      type: comparison.type,
-      filterType: 'date',
-      filter: comparison.dateFrom,
-      filterTo: comparison.dateTo
-    };
-  } else if (isSetComparison(comparison)) {
-    return {
-      type: 'in',
-      filterType: 'set',
-      filter: comparison.values
-    };
-  }
-  return comparison;
 }
