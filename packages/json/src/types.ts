@@ -1,7 +1,7 @@
 import { AstNode } from '@qliaison/core';
 
 /**
- * Extract propertiy keys from T that are not a method
+ * Extract property keys from T that are not a method
  */
 export type NonMethodKeys<T> = {
   [K in keyof T]: T[K] extends Function ? never : K;

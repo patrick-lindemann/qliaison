@@ -9,7 +9,7 @@ export class QuerySerializer extends Serializer<string> {
     condesed: false
   };
 
-  constructor(options: Partial<QuerySerializerOptions> = {}) {
+  constructor(options: QuerySerializerOptions = {}) {
     super();
     this.options = { ...this.options, ...options };
   }

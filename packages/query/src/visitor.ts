@@ -22,7 +22,7 @@ export interface QueryVisitorOptions {
    *  `((a = 1 AND b = 2) OR c = 3);`
    *
    */
-  parantheses: boolean;
+  parantheses?: boolean;
 
   /**
    * Whether to add whitespaces to listings for better readability or not.
@@ -34,13 +34,13 @@ export interface QueryVisitorOptions {
    * `a = func(1,false) or b in ['admin','user','guest']`
    *
    */
-  condesed: boolean;
+  condesed?: boolean;
 }
 
 export class QueryVisitor extends Visitor<string> {
   options: QueryVisitorOptions;
 
-  constructor(options: QueryVisitorOptions) {
+  constructor(options: QueryVisitorOptions = {}) {
     super();
     this.options = options;
   }
