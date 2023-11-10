@@ -9,13 +9,7 @@ import {
   Variable,
   Visitor
 } from '@qliaison/core';
-import {
-  WhereLeftOperand,
-  WhereOptions,
-  col,
-  fn,
-  where
-} from '@sequelize/core';
+import { WhereOptions, col, fn, where } from '@sequelize/core';
 import { symbols } from './symbols';
 
 export class SequelizeVisitor<T> extends Visitor<WhereOptions<T>> {
@@ -45,7 +39,7 @@ export class SequelizeVisitor<T> extends Visitor<WhereOptions<T>> {
       return { [operator as symbol]: [left, right] };
     }
     if (operation.left instanceof Function) {
-      return where(left as WhereLeftOperand, { [operator]: right });
+      return where(left, { [operator]: right });
     }
     return { [left as string]: { [operator]: right } };
   }
