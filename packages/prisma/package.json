@@ -36,8 +36,6 @@
     ".": "./lib/index.js",
     "./package.json": "./package.json"
   },
-  "dependencies": {
-  },
   "devDependencies": {
     "@types/jest": "^29.5.2",
     "@types/node": "^20.2.5",
