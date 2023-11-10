@@ -1,6 +1,6 @@
 {
   "name": "@qliaison/json",
-  "version": "0.0.0",
+  "version": "0.0.3",
   "description": "The JSON parser and serializer modules for qLiaison",
   "author": "Patrick Lindemann",
   "license": "MIT",
@@ -37,7 +37,7 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@qliaison/core": "*",
+    "@qliaison/core": "^0.0.3",
     "lodash.isempty": "^4.4.0"
   },
   "devDependencies": {

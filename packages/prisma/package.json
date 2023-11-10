@@ -1,6 +1,6 @@
 {
   "name": "@qliaison/prisma",
-  "version": "0.0.0",
+  "version": "0.0.3",
   "description": "The Prisma filter serializer module for qLiaison",
   "author": "Patrick Lindemann",
   "license": "MIT",
@@ -37,7 +37,7 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@qliaison/core": "*"
+    "@qliaison/core": "^0.0.3"
   },
   "devDependencies": {
     "@types/jest": "^29.5.2",
