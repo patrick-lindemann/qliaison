@@ -37,7 +37,6 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@qliaison/core": "^0.0.3",
     "nearley": "^2.20.1"
   },
   "devDependencies": {
