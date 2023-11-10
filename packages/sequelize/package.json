@@ -37,7 +37,6 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@qliaison/core": "^0.0.3",
     "@sequelize/core": "^7.0.0-alpha.23"
   },
   "devDependencies": {
