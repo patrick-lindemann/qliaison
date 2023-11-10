@@ -18,7 +18,7 @@
     "release": "lerna publish --force-publish=* --yes"
   },
   "devDependencies": {
-    "lerna": "^6.6.2",
+    "lerna": "^7.4.2",
     "rimraf": "^5.0.1"
   }
 }
