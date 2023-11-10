@@ -3,5 +3,7 @@
   "npmClient": "npm",
   "version": "0.0.3",
   "useWorkspaces": true,
-  "packages": ["packages/core", "packages/*"]
+  "packages": [
+    "packages/*"
+  ]
 }
