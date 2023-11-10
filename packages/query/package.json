@@ -4,6 +4,7 @@
   "description": "The query language parser and serializer module for qLiaison",
   "author": "Patrick Lindemann",
   "license": "MIT",
+  "type": "module",
   "keywords": [
     "filter",
     "connector",
