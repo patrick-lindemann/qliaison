@@ -11,22 +11,22 @@
 
 @{%
 import {
-  root, 
-  operator,
-  unaryOperation,
+  array,
   binaryOperation,
-  selector,
+  boolean,
+  float,
   fn,
   identifier,
-  array,
-  listing,
-  nul,
-  boolean,
   integer,
-  float,
-  string,
   join,
-  nth
+  listing,
+  nth,
+  nul,
+  operator,
+  root,
+  selector,
+  string,
+  unaryOperation
 } from './processor';
 %}
 
