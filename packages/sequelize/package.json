@@ -4,7 +4,7 @@
   "description": "The Sequelize filter serializer module for qLiaison",
   "author": "Patrick Lindemann",
   "license": "MIT",
-  "type": "module",
+  "type": "commonjs",
   "keywords": [
     "filter",
     "connector",

@@ -4,7 +4,7 @@
   "description": "The JSON parser and serializer modules for qLiaison",
   "author": "Patrick Lindemann",
   "license": "MIT",
-  "type": "module",
+  "type": "commonjs",
   "keywords": [
     "filter",
     "connector",
