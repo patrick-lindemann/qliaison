@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "@qliaison/core": "workspace:*",
-    "@sequelize/core": "^7.0.0-alpha.23"
+    "@sequelize/core": "^7.0.0-alpha.33"
   },
   "devDependencies": {
     "@types/jest": "^29.5.2",
