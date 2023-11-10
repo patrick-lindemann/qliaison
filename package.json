@@ -6,16 +6,15 @@
   ],
   "scripts": {
     "clean": "lerna clean --yes && lerna run clean --parallel",
-    "clean:full": "npm run clean && rimraf node_modules",
+    "clean:full": "yarn run clean && rimraf node_modules",
     "build": "lerna run build --parallel",
     "watch": "lerna watch -- lerna run build:dev --scope=\\$LERNA_PACKAGE_NAME",
-    "pretest": "npm run build",
+    "pretest": "yarn run build",
     "test": "lerna run test --parallel",
     "lint": "lerna run lint --parallel",
     "format": "lerna run format --parallel",
-    "prepublishOnly": "npm run clean && npm run build",
-    "publish": "lerna publish --force-publish=* --no-git-tag-version --no-push --yes",
-    "release": "lerna publish --force-publish=* --yes"
+    "prepublishOnly": "yarn run clean && yarn run build",
+    "publish": "lerna publish --force-publish=* --yes"
   },
   "devDependencies": {
     "lerna": "^7.4.2",
