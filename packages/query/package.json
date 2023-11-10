@@ -1,6 +1,6 @@
 {
   "name": "@qliaison/query",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "The query language parser and serializer module for qLiaison",
   "author": "Patrick Lindemann",
   "license": "MIT",

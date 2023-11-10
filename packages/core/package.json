@@ -1,6 +1,6 @@
 {
   "name": "@qliaison/core",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Effortlessly translate queries from various sources to flexible where clauses for popular ORM frameworks.",
   "author": "Patrick Lindemann",
   "license": "MIT",
