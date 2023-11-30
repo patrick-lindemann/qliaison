@@ -30,3 +30,11 @@ export function isMultiFilterModel(
 ): model is IMultiFilterModel {
   return model.filterType === 'multi';
 }
+
+export function isBoolean(value: string): boolean {
+  return value === 'true' || value === 'false';
+}
+
+export function isNumeric(value: string): boolean {
+  return !isNaN(parseFloat(value));
+}

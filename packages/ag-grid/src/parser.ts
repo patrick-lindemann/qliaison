@@ -9,7 +9,13 @@ import {
   SetFilterModel,
   TextFilterModel
 } from 'ag-grid-community';
-import { isCombinedSimpleModel, isMultiFilterModel, parseDate } from './utils';
+import {
+  isBoolean,
+  isCombinedSimpleModel,
+  isMultiFilterModel,
+  isNumeric,
+  parseDate
+} from './utils';
 
 /* Types */
 
@@ -273,11 +279,19 @@ export class AgGridFilterParser extends Parser<ColumnFilterModels> {
     }
     const columnNode = new Ast.Variable(column);
     const valueNode = new Ast.Array(
-      model.values.map((value) =>
-        typeof value === 'string'
-          ? new Ast.StringValue(value)
-          : new Ast.NullValue()
-      )
+      model.values.map((value) => {
+        if (value === null) {
+          return new Ast.NullValue();
+        }
+        // Special cases: boolean and number values are stored as strings
+        if (isBoolean(value)) {
+          return new Ast.BooleanValue(value === 'true');
+        }
+        if (isNumeric(value)) {
+          return new Ast.NumberValue(parseFloat(value));
+        }
+        return new Ast.StringValue(value);
+      })
     );
     return new Ast.In(columnNode, valueNode);
   }
