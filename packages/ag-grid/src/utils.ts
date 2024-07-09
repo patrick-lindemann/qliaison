@@ -6,12 +6,12 @@ import {
 } from 'ag-grid-community';
 
 /**
- * Parse a date value as provided in by AG Grid in the format 'yyyy-mm-dd hh:mm:ss'.
+ * Parse a date value as provided in by AG Grid in the format 'YYYY-MM-DD hh:mm:ss'.
  *
  * FIXME: This can lead to bugs, but since this is an error on the AG Grid side,
  * currently, there is nothing we can do.
  *
- * @param value The value in the format 'yyyy-mm-dd hh:mm:ss'
+ * @param value The value in the format 'YYYY-MM-DD hh:mm:ss'
  * @returns The parsed date, assuming the string was in the local time zone
  */
 export function parseDate(value: string): Date {

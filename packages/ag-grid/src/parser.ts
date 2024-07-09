@@ -180,10 +180,8 @@ export class AgGridFilterParser extends Parser<ColumnFilterModels> {
     column: string,
     model: NumberFilterModel
   ): Ast.Condition | Ast.Comparison {
-    if (!model.filter) {
-      throw new SyntaxError(
-        `Empty filter specified for column '${column}'. Use 'blank' or 'notBlank' instead.`
-      );
+    if (model.filter === null || model.filter === undefined) {
+      throw new SyntaxError(`Empty filter specified for column '${column}'.`);
     }
     const columnNode = new Ast.Variable(column);
     const valueNode = new Ast.NumberValue(model.filter);
@@ -228,10 +226,8 @@ export class AgGridFilterParser extends Parser<ColumnFilterModels> {
     column: string,
     model: DateFilterModel
   ): Ast.Condition | Ast.Comparison {
-    if (!model.dateFrom) {
-      throw new SyntaxError(
-        `Empty filter specified for column '${column}'. Use 'blank' or 'notBlank' instead.`
-      );
+    if (model.dateFrom === null) {
+      throw new SyntaxError(`Empty filter specified for column '${column}'.`);
     }
     const columnNode = new Ast.Variable(column);
     const valueNode = new Ast.DateValue(parseDate(model.dateFrom));
@@ -272,11 +268,6 @@ export class AgGridFilterParser extends Parser<ColumnFilterModels> {
     column: string,
     model: SetFilterModel
   ): Ast.Condition | Ast.Comparison {
-    if (model.values.length === 0) {
-      throw new SyntaxError(
-        `Empty filter specified for column '${column}'. Use 'blank' or 'notBlank' instead.`
-      );
-    }
     const columnNode = new Ast.Variable(column);
     const valueNode = new Ast.Array(
       model.values.map((value) => {
