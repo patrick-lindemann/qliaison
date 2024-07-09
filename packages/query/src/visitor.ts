@@ -92,6 +92,8 @@ export class QueryVisitor extends Visitor<string> {
   visitValue(node: Value): unknown {
     if (node.type == 'string') {
       return '"' + node.value + '"';
+    } else if (node.type == 'date') {
+      return '"' + node.value.toISOString() + '"';
     }
     return String(node.value);
   }
