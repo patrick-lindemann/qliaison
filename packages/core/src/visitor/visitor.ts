@@ -10,11 +10,11 @@ import type {
 } from '../ast';
 
 export abstract class Visitor<OutputType> {
-  abstract visitRoot(root: Root): OutputType;
-  abstract visitUnaryOperation(operation: UnaryOperation): unknown;
-  abstract visitBinaryOperation(operation: BinaryOperation): unknown;
-  abstract visitFunction(func: Function): unknown;
-  abstract visitVariable(variable: Variable): unknown;
-  abstract visitArray<T extends AstNode>(array: Array<T>): unknown;
-  abstract visitValue(value: Value): unknown;
+  abstract visitRoot(node: Root): OutputType;
+  abstract visitUnaryOperation(node: UnaryOperation): unknown;
+  abstract visitBinaryOperation(node: BinaryOperation): unknown;
+  abstract visitFunction(node: Function): unknown;
+  abstract visitVariable(node: Variable): unknown;
+  abstract visitArray<T extends AstNode>(nodes: Array<T>): unknown;
+  abstract visitValue(node: Value): unknown;
 }

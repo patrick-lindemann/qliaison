@@ -12,34 +12,34 @@ import {
 import { Node } from './types';
 
 export class JsonVisitor extends Visitor<object> {
-  visitRoot(root: Root): object {
-    if (!root.child) {
+  visitRoot(node: Root): object {
+    if (!node.child) {
       return {};
     }
-    return root.child.accept(this) as object;
+    return node.child.accept(this) as object;
   }
 
-  visitUnaryOperation(operation: UnaryOperation): Node<UnaryOperation> {
-    return { nodeType: 'unaryOperation', ...operation };
+  visitUnaryOperation(node: UnaryOperation): Node<UnaryOperation> {
+    return { nodeType: 'unaryOperation', ...node };
   }
 
-  visitBinaryOperation(operation: BinaryOperation): Node<BinaryOperation> {
-    return { nodeType: 'binaryOperation', ...operation };
+  visitBinaryOperation(node: BinaryOperation): Node<BinaryOperation> {
+    return { nodeType: 'binaryOperation', ...node };
   }
 
-  visitFunction(func: Function): Node<Function> {
-    return { nodeType: 'function', ...func };
+  visitFunction(node: Function): Node<Function> {
+    return { nodeType: 'function', ...node };
   }
 
-  visitVariable(variable: Variable): Node<Variable> {
-    return { nodeType: 'variable', ...variable };
+  visitVariable(node: Variable): Node<Variable> {
+    return { nodeType: 'variable', ...node };
   }
 
-  visitArray<T extends AstNode>(array: Array<T>): Node<Array<T>> {
-    return { nodeType: 'array', ...array };
+  visitArray<T extends AstNode>(node: Array<T>): Node<Array<T>> {
+    return { nodeType: 'array', ...node };
   }
 
-  visitValue(value: Value): Node<Value> {
-    return { nodeType: 'value', ...value };
+  visitValue(node: Value): Node<Value> {
+    return { nodeType: 'value', ...node };
   }
 }

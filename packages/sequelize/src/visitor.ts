@@ -13,32 +13,32 @@ import { WhereOptions, col, fn, where } from '@sequelize/core';
 import { symbols } from './symbols';
 
 export class SequelizeVisitor<T> extends Visitor<WhereOptions<T>> {
-  visitRoot(root: Root): WhereOptions<T> {
-    if (!root.child) {
+  visitRoot(node: Root): WhereOptions<T> {
+    if (!node.child) {
       return {};
     }
-    return root.child.accept(this) as WhereOptions<T>;
+    return node.child.accept(this) as WhereOptions<T>;
   }
 
-  visitUnaryOperation(operation: UnaryOperation): unknown {
-    const right = operation.right.accept(this);
-    const symbol = symbols[operation.operator] as symbol;
+  visitUnaryOperation(node: UnaryOperation): unknown {
+    const right = node.right.accept(this);
+    const symbol = symbols[node.operator] as symbol;
     return { [symbol]: [right] };
   }
 
-  visitBinaryOperation(operation: BinaryOperation): unknown {
-    const left = operation.left.accept(this);
-    const right = operation.right.accept(this);
-    const operator = symbols[operation.operator];
+  visitBinaryOperation(node: BinaryOperation): unknown {
+    const left = node.left.accept(this);
+    const right = node.right.accept(this);
+    const operator = symbols[node.operator];
     if (!operator) {
       throw new Error(
-        `Sequelize symbol for operator "${operation.operator}" not found.`
+        `Sequelize symbol for operator "${node.operator}" not found.`
       );
     }
-    if (['and', 'or'].includes(operation.operator)) {
+    if (['and', 'or'].includes(node.operator)) {
       return { [operator as symbol]: [left, right] };
     }
-    if (operation.left instanceof Function) {
+    if (node.left instanceof Function) {
       return where(left, { [operator]: right });
     }
     return { [left as string]: { [operator]: right } };
@@ -56,15 +56,15 @@ export class SequelizeVisitor<T> extends Visitor<WhereOptions<T>> {
     return fn(func.identifier, ...parameters);
   }
 
-  visitVariable(variable: Variable): unknown {
-    return variable.identifier;
+  visitVariable(node: Variable): unknown {
+    return node.identifier;
   }
 
-  visitArray<T extends AstNode>(array: Array<T>): unknown {
-    return array.items.map((item) => item.accept(this));
+  visitArray<T extends AstNode>(nodes: Array<T>): unknown {
+    return nodes.items.map((node) => node.accept(this));
   }
 
-  visitValue(value: Value): unknown {
-    return value.value;
+  visitValue(node: Value): unknown {
+    return node.value;
   }
 }

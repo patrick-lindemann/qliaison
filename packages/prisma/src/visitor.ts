@@ -11,25 +11,25 @@ import {
 } from '@qliaison/core';
 
 export class PrismaVisitor<T> extends Visitor<unknown> {
-  visitRoot(root: Root): unknown {
+  visitRoot(node: Root): unknown {
     throw new Error('Method not implemented.');
   }
-  visitUnaryOperation(operation: UnaryOperation): unknown {
+  visitUnaryOperation(node: UnaryOperation): unknown {
     throw new Error('Method not implemented.');
   }
-  visitBinaryOperation(operation: BinaryOperation): unknown {
+  visitBinaryOperation(node: BinaryOperation): unknown {
     throw new Error('Method not implemented.');
   }
-  visitFunction(func: Function): unknown {
+  visitFunction(node: Function): unknown {
     throw new Error('Method not implemented.');
   }
-  visitVariable(variable: Variable): unknown {
+  visitVariable(node: Variable): unknown {
     throw new Error('Method not implemented.');
   }
-  visitArray<T extends AstNode>(array: Array<T>): unknown {
+  visitArray<T extends AstNode>(nodes: Array<T>): unknown {
     throw new Error('Method not implemented.');
   }
-  visitValue(value: Value): unknown {
+  visitValue(nodee: Value): unknown {
     throw new Error('Method not implemented.');
   }
 }

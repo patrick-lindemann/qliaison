@@ -45,54 +45,54 @@ export class QueryVisitor extends Visitor<string> {
     this.options = options;
   }
 
-  visitRoot(root: Root): string {
-    if (!root.child) {
+  visitRoot(node: Root): string {
+    if (!node.child) {
       return '';
     }
-    return root.child.accept(this) as string;
+    return node.child.accept(this) as string;
   }
 
-  visitUnaryOperation(operation: UnaryOperation): unknown {
-    const operator = symbols[operation.operator];
-    const value = operation.right.accept(this);
+  visitUnaryOperation(node: UnaryOperation): unknown {
+    const operator = symbols[node.operator];
+    const value = node.right.accept(this);
     const result = `${operator} ${value}`;
     return this.options.parantheses ? `(${result})` : result;
   }
 
-  visitBinaryOperation(operation: BinaryOperation): unknown {
-    const operator = symbols[operation.operator];
-    const left = operation.left.accept(this);
-    const right = operation.right.accept(this);
+  visitBinaryOperation(node: BinaryOperation): unknown {
+    const operator = symbols[node.operator];
+    const left = node.left.accept(this);
+    const right = node.right.accept(this);
     const result = `${left} ${operator} ${right}`;
     return this.options.parantheses ? `(${result})` : result;
   }
 
-  visitFunction(func: Function): unknown {
-    const identifier = func.identifier;
-    const parameters = func.parameters
+  visitFunction(node: Function): unknown {
+    const identifier = node.identifier;
+    const parameters = node.parameters
       .map((param) => param.accept(this))
       .join(',' + (this.options.condesed ? '' : ' '));
     return `${identifier}(${parameters})`;
   }
 
-  visitVariable(variable: Variable): unknown {
-    return variable.identifier;
+  visitVariable(node: Variable): unknown {
+    return node.identifier;
   }
 
-  visitArray<T extends AstNode>(array: Array<T>): unknown {
+  visitArray<T extends AstNode>(nodes: Array<T>): unknown {
     return (
       '[' +
-      array.items
+      nodes.items
         .map((item) => item.accept(this))
         .join(',' + (this.options.condesed ? '' : ' ')) +
       ']'
     );
   }
 
-  visitValue(value: Value): unknown {
-    if (value.type == 'string') {
-      return '"' + value.value + '"';
+  visitValue(node: Value): unknown {
+    if (node.type == 'string') {
+      return '"' + node.value + '"';
     }
-    return String(value.value);
+    return String(node.value);
   }
 }
