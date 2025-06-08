@@ -1,6 +1,6 @@
 {
   "name": "@qliaison/ag-grid",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "The AG Grid filter parser module for qLiaison.",
   "author": "Patrick Lindemann",
   "license": "MIT",
