@@ -129,16 +129,28 @@ export class AgGridFilterParser extends Parser<ColumnFilterModels> {
     model: TextFilterModel
   ): Ast.Condition | Ast.Comparison {
     const columnNode = new Ast.Variable(column);
+    if (model.filter === undefined || model.filter === null) {
+      switch (model.type) {
+        case 'blank':
+          return new Ast.Or(
+            new Ast.Equals(columnNode, new Ast.NullValue()),
+            new Ast.Equals(columnNode, new Ast.StringValue(''))
+          );
+        case 'notBlank':
+          return new Ast.And(
+            new Ast.NotEquals(columnNode, new Ast.NullValue()),
+            new Ast.NotEquals(columnNode, new Ast.StringValue(''))
+          );
+        default:
+          throw new SyntaxError(
+            `No filter specified for column '${column}' and filter type '${model.type}'.`
+          );
+      }
+    }
     switch (model.type) {
       case 'equals':
-        if (model.filter === undefined || model.filter === null) {
-          return new Ast.Equals(columnNode, new Ast.NullValue());
-        }
         return new Ast.Equals(columnNode, new Ast.StringValue(model.filter));
       case 'notEqual':
-        if (model.filter === undefined || model.filter === null) {
-          return new Ast.NotEquals(columnNode, new Ast.NullValue());
-        }
         return new Ast.NotEquals(columnNode, new Ast.StringValue(model.filter));
       case 'startsWith':
         return new Ast.Like(
@@ -160,16 +172,6 @@ export class AgGridFilterParser extends Parser<ColumnFilterModels> {
           columnNode,
           new Ast.StringValue('%' + model.filter + '%')
         );
-      case 'blank':
-        return new Ast.Or(
-          new Ast.Equals(columnNode, new Ast.NullValue()),
-          new Ast.Equals(columnNode, new Ast.StringValue(''))
-        );
-      case 'notBlank':
-        return new Ast.And(
-          new Ast.NotEquals(columnNode, new Ast.NullValue()),
-          new Ast.NotEquals(columnNode, new Ast.StringValue(''))
-        );
       default:
         // https://www.ag-grid.com/angular-data-grid/filter-text/#text-filter-options
         throw new SyntaxError(
@@ -182,10 +184,19 @@ export class AgGridFilterParser extends Parser<ColumnFilterModels> {
     column: string,
     model: NumberFilterModel
   ): Ast.Condition | Ast.Comparison {
-    if (model.filter === null || model.filter === undefined) {
-      throw new SyntaxError(`Empty filter specified for column '${column}'.`);
-    }
     const columnNode = new Ast.Variable(column);
+    if (model.filter === undefined || model.filter === null) {
+      switch (model.type) {
+        case 'blank':
+          return new Ast.Equals(columnNode, new Ast.NullValue());
+        case 'notBlank':
+          return new Ast.NotEquals(columnNode, new Ast.NullValue());
+        default:
+          throw new SyntaxError(
+            `No filter specified for column '${column}' and filter type '${model.type}'.`
+          );
+      }
+    }
     const valueNode = new Ast.NumberValue(model.filter);
     switch (model.type) {
       case 'equals':
@@ -201,7 +212,7 @@ export class AgGridFilterParser extends Parser<ColumnFilterModels> {
       case 'greaterThanOrEqual':
         return new Ast.GreaterThanEquals(columnNode, valueNode);
       case 'inRange': {
-        if (!model.filterTo) {
+        if (model.filterTo === undefined || model.filterTo === null) {
           throw new SyntaxError(
             `Empty filterTo specified for column '${column}' and filter type 'inRange'`
           );
@@ -212,10 +223,6 @@ export class AgGridFilterParser extends Parser<ColumnFilterModels> {
           new Ast.LessThanEquals(columnNode, valueToNode)
         );
       }
-      case 'blank':
-        return new Ast.Equals(columnNode, new Ast.NullValue());
-      case 'notBlank':
-        return new Ast.NotEquals(columnNode, new Ast.NullValue());
       default:
         // https://www.ag-grid.com/angular-data-grid/filter-number/#number-filter-options
         throw new SyntaxError(
@@ -228,10 +235,19 @@ export class AgGridFilterParser extends Parser<ColumnFilterModels> {
     column: string,
     model: DateFilterModel
   ): Ast.Condition | Ast.Comparison {
-    if (model.dateFrom === null) {
-      throw new SyntaxError(`Empty filter specified for column '${column}'.`);
-    }
     const columnNode = new Ast.Variable(column);
+    if (model.dateFrom === null) {
+      switch (model.type) {
+        case 'blank':
+          return new Ast.Equals(columnNode, new Ast.NullValue());
+        case 'notBlank':
+          return new Ast.NotEquals(columnNode, new Ast.NullValue());
+        default:
+          throw new SyntaxError(
+            `No filter specified for column '${column}' and filter type '${model.type}'.`
+          );
+      }
+    }
     const valueNode = new Ast.DateValue(parseDate(model.dateFrom));
     switch (model.type) {
       case 'equals':
@@ -254,10 +270,6 @@ export class AgGridFilterParser extends Parser<ColumnFilterModels> {
           new Ast.LessThanEquals(columnNode, valueToNode)
         );
       }
-      case 'blank':
-        return new Ast.Equals(columnNode, new Ast.NullValue());
-      case 'notBlank':
-        return new Ast.NotEquals(columnNode, new Ast.NullValue());
       default:
         // https://www.ag-grid.com/angular-data-grid/filter-date/#date-filter-options
         throw new SyntaxError(
