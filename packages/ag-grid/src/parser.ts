@@ -127,16 +127,17 @@ export class AgGridFilterParser extends Parser<ColumnFilterModels> {
     column: string,
     model: TextFilterModel
   ): Ast.Condition | Ast.Comparison {
-    if (!model.filter) {
-      throw new SyntaxError(
-        `Empty filter specified for column '${column}'. Use 'blank' or 'notBlank' instead.`
-      );
-    }
     const columnNode = new Ast.Variable(column);
     switch (model.type) {
       case 'equals':
+        if (model.filter === undefined || model.filter === null) {
+          return new Ast.Equals(columnNode, new Ast.NullValue());
+        }
         return new Ast.Equals(columnNode, new Ast.StringValue(model.filter));
       case 'notEqual':
+        if (model.filter === undefined || model.filter === null) {
+          return new Ast.NotEquals(columnNode, new Ast.NullValue());
+        }
         return new Ast.NotEquals(columnNode, new Ast.StringValue(model.filter));
       case 'startsWith':
         return new Ast.Like(
