@@ -89,7 +89,8 @@ export class AgGridFilterParser extends Parser<ColumnFilterModels> {
     column: string,
     model: ICombinedSimpleModel<ISimpleFilterModel>
   ): Ast.Condition | Ast.Comparison {
-    // Ensure Backwards compability with deprecated properties 'condition1' and 'condition2'
+    // Ensure backwards compability with deprecated properties 'condition1' and 'condition2'
+    // @ts-ignore
     const conditions = model.conditions || [model.condition1, model.condition2];
     const Operator = model.operator === 'OR' ? Ast.Or : Ast.And;
     if (conditions.length === 0) {
